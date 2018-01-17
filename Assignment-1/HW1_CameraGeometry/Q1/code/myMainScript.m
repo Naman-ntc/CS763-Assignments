@@ -1,6 +1,1 @@
-%% MyMainScript
-
-tic;
-%% Your code here
-
-toc;
+image = imread('../data/input.jpg');
