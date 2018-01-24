@@ -43,8 +43,8 @@ T = [T; [zeros(1,2) , 1]];
 U = object_scale*[eye(3) , -1*object_mean];
 U = [U; [zeros(1,3) , 1]];
 
-original_image_points = image_points
-original_object_points = object_points
+original_image_points = image_points;
+original_object_points = object_points;
 
 image_points = [image_points; ones(1,N)];
 object_points = [object_points; ones(1,N)];
@@ -76,9 +76,10 @@ P = inv(T)*Phat*U;
 
 M = P(1:3,1:3);
 [R,K] = qr(M);
+K_normalised = K/K(3,3);
 % R is the rotation matrix and K is a upper triangular matrix
 
-X_0 = -1*inv(M)*P;
+X_0 = -1*inv(M)*P(:,4);
 
 %%%%%%%%%%
 % predicted_points = P*[original_object_points; ones(1, N)];
