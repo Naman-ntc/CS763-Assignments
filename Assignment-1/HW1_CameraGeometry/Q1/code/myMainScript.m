@@ -94,10 +94,12 @@ predicted_euclidean_points
 original_image_points
 
 
-hold on;
 for i=1:N
-    plot(original_image_points(1, i), original_image_points(2, i), 'r*')
-    plot(predicted_points(1, i), predicted_points(2, i), 'go')
+    plot(original_image_points(1, i), original_image_points(2, i), 'r*');
+    hold on;
+    plot(predicted_points(1, i), predicted_points(2, i), 'go');
+    hold on;
 end
-title('Bottle wit coordinates on it', 'FontSize', 24);
+title('Image points and Predicted points', 'FontSize', 24);
+
 %}
