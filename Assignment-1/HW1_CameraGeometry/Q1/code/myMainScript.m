@@ -68,35 +68,36 @@ Phat = reshape(Phat,[4,3])';
 
 P = inv(T)*Phat*U;
 
-%[~,~,V] = svd(P); % Can also be computed algebraically actually (Ziesermann pg150)
-%X0 = V(:,4); % Check -- Last homogeneous coordinated almost 1 but not exactly
-%X0 = X0(1:3); 
-
 % P = [M | -M X_0]
 
 M = P(1:3,1:3);
+
 [R,K] = qr(M);
 K_normalised = K/K(3,3);
+
 % R is the rotation matrix and K is a upper triangular matrix
 
 X_0 = -1*inv(M)*P(:,4);
 
-%%%%%%%%%%
-% predicted_points = P*[original_object_points; ones(1, N)];
-% predicted_points(1,:) = predicted_points(1,:)./(predicted_points(3,:));
-% predicted_points(2,:) = predicted_points(2,:)./(predicted_points(3,:));
-% predicted_points(3,:) = predicted_points(3,:)./(predicted_points(3,:));
-% 
-% rmse = norm(predicted_points-[original_image_points; ones(1, N)])/6
-% predicted_points
-% [original_image_points; ones(1, N)]
-% 
-% yourImage = imread('imageWithPoints.jpg');
-% imshow(yourImage);
-% hold on;
-% for i=1:N
-%     plot(original_image_points(1, i), original_image_points(2, i), 'r*')
-%     plot(predicted_points(1, i), predicted_points(2, i), 'go')
-% end
-% title('Bottle wit coordinates on it', 'FontSize', 24);
-%%%%%%%%%%
+%{
+predicted_points = P*[original_object_points; ones(1, N)];
+predicted_points(1,:) = predicted_points(1,:)./(predicted_points(3,:));
+predicted_points(2,:) = predicted_points(2,:)./(predicted_points(3,:));
+predicted_points(3,:) = predicted_points(3,:)./(predicted_points(3,:));
+
+rmse = norm(predicted_points-[original_image_points; ones(1, N)])/6;
+predicted_euclidean_points = predicted_points(1:2,:);
+
+
+rmse
+predicted_euclidean_points
+original_image_points
+
+
+hold on;
+for i=1:N
+    plot(original_image_points(1, i), original_image_points(2, i), 'r*')
+    plot(predicted_points(1, i), predicted_points(2, i), 'go')
+end
+title('Bottle wit coordinates on it', 'FontSize', 24);
+%}
