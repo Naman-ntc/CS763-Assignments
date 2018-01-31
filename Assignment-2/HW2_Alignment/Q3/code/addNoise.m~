@@ -1,0 +1,4 @@
+function [noisyImage] = addNoise(image)
+    noisyImage = image + (randi(8, size(image)) - 1);
+    n
+end
