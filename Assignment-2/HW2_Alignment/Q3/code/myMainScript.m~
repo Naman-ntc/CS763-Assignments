@@ -45,13 +45,13 @@ surf(entropyGrid1);
 surf(entropyGrid2);
 
 [M,I] = min(entropyGrid1(:));
-[barbaraAngle, barbaraTranslation] = ind2sub(size(entropyGrid1),I);
+[barbaraAngle, barbaraTranslation] = ind2sub(size(entropyGrid1),I)
 barbaraAngle = barbaraAngle - 61
 barbaraTranslation = barbaraTranslation - 13
 
 [M,I] = min(entropyGrid2(:));
-[flashAngle, flashTranslation] = ind2sub(size(entropyGrid2),I);
-flashAngle = flashAngle - 61
-flashTranslation = flashTranslation - 13
+[flAngle, flashTranslation] = ind2sub(size(entropyGrid1),I)
+barbaraAngle = barbaraAngle - 61
+barbaraTranslation = barbaraTranslation - 13
 
 toc;

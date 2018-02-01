@@ -23,8 +23,8 @@ end
 warpedImage(isnan(warpedImage)) = 0;
 %}
 
-warpedImage = imrotate(image, angle, 'nearest', 'crop');
-warpedImage = imtranslate(warpedImage, tx, 0, 'crop');
+warpedImage = imrotate(image, angle, 'crop');
+warpedImage = imtranslate(warpedImage, [tx, 0,]);
 warpedImage = max(warpedImage, 0);
 
 end
