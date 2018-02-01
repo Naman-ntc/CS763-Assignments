@@ -4,6 +4,8 @@ function [warpedImage] = rotateAndTranslate(image, angle, tx)
 if size(size(image), 2) == 3
    image = rgb2gray(image);
 end
+
+%{
 [h, l] = size(image);
 midH = h/2;
 midL = l/2;
@@ -19,4 +21,10 @@ for i=1:h
     end
 end
 warpedImage(isnan(warpedImage)) = 0;
+%}
+
+warpedImage = imrotate(image, angle, 'nearest', 'crop');
+warpedImage = imtranslate(warpedImage, tx, 0, 'crop');
+warpedImage = max(warpedImage, 0);
+
 end
