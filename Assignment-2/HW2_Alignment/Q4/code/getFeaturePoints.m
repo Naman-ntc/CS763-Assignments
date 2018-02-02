@@ -1,10 +1,7 @@
-function [ matchedPoints1, matchedPoints2 ] = getFeauturePoints( s1, s2 )
+function [ matchedPoints1, matchedPoints2 ] = getFeauturePoints( image1, image2 )
 
-    image1 = imread(s1);
     image1 = rgb2gray(image1);
-    image2 = imread(s2);
     image2 = rgb2gray(image2);
-
 
     points1 = detectSURFFeatures(image1);
     points2 = detectSURFFeatures(image2);
@@ -17,6 +14,16 @@ function [ matchedPoints1, matchedPoints2 ] = getFeauturePoints( s1, s2 )
     matchedPoints1 = vpts1(indexPairs(:, 1));
     matchedPoints2 = vpts2(indexPairs(:, 2));
     
+    %figure; showMatchedFeatures(image1,image2,matchedPoints1,matchedPoints2);
+    %legend('matched points 1','matched points 2');
+    
     matchedPoints1 = matchedPoints1.Location;
     matchedPoints2 = matchedPoints2.Location;
+    
+    matchedPoints1 = circshift(matchedPoints1,1,2);
+    matchedPoints2 = circshift(matchedPoints2,1,2);
+    
+    %figure;
+    %plot(matchedPoints1(1:2,:),'*'); hold on;
+    %plot(matchedPoints2(1:2,:),'+');
 end

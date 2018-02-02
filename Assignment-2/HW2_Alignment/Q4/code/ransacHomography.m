@@ -18,6 +18,5 @@ for i = 1:iter
     Hrr(i,:,:) = H;
 end
 [~,index] = max(arr);
-H = Hrr(index,:,:);
+H = reshape(Hrr(index,:,:),3,3);
 end
-
