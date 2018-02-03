@@ -1,0 +1,7 @@
+function [ output_args ] = recenter_transformer(tforms, image)
+%RECENTER_TRANSFORMER Summary of this function goes here
+%   Detailed explanation goes here
+
+
+end
+
