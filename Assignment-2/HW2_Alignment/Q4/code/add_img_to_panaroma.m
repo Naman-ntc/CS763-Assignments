@@ -26,8 +26,7 @@ for i=bbox_x
             panaroma(i,j,3) = image2(x_new,y_new,3);
         else
             panaroma(i,j,3) = (image2(x_new,y_new,3)+ panaroma(i,j,3))/2;
-        end  
-        %[max(1,floor(orig(1)+0.5)),max(1,floor(orig(2)+0.5))] == [i,j]
+        end
     end
 end
 
