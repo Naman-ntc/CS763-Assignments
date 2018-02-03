@@ -6,7 +6,7 @@ image2 = imread('../input/monument/2.JPG');
 
 panaroma_size = [1200,1500,3];
 panaroma = zeros(panaroma_size);
-panaroma(1:image_x,1:image_y,:) = image1;
+%panaroma(1:image_x,1:image_y,:) = image1;
 H_1_to_1 = eye(3);
 H_1_to_1(1,3) = 350;
 %H_1_to_1(2,3) = 100;
