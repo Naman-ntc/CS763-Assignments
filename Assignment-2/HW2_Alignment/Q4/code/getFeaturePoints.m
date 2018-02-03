@@ -23,7 +23,23 @@ function [ matchedPoints1, matchedPoints2 ] = getFeauturePoints( image1, image2 
     matchedPoints1 = circshift(matchedPoints1,1,2);
     matchedPoints2 = circshift(matchedPoints2,1,2);
     
-    %figure;
-    %plot(matchedPoints1(1:2,:),'*'); hold on;
-    %plot(matchedPoints2(1:2,:),'+');
+    
+    %{
+    Before circshift it was this :
+    
+    ans =
+    
+    1.0e+03 *
+    
+    [1.0475    0.7901]
+    
+    
+    ans =
+
+   1.0e+03 *
+
+    [1.1179    0.8178]
+    
+    %}
+    
 end
