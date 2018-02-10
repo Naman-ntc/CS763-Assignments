@@ -1,0 +1,4 @@
+1
+linear 192 10
+/path/to/weight_sample_1.bin
+/path/to/bias_sample_1.bin
