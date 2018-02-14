@@ -29,9 +29,9 @@ class Model():
 		lenn = len(self.Layers)
 		for i in range(lenn-1,-1,-1):
 			print("Layer : %d"%(i))
-			print(Layers[i])
-			if (Layers[i].isTrainable):
-				Layers[i].print_param()
+			print(self.Layers[i])
+			if (self.Layers[i].isTrainable):
+				self.Layers[i].print_param()
 	def clearGradParam(self):
 		for Layer in self.Layers:
 			Layer.clear_grad()	
