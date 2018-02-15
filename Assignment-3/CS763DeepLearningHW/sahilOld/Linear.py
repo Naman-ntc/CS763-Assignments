@@ -4,11 +4,11 @@ from math import sqrt
 
 class Linear():
 	"""docstring for Linear"""
-	def __init__(self, input_dim,output_dim,initialization='He'):
+	def __init__(self, input_dim,output_dim,initialization='Xavier'):
 		super(Linear, self).__init__()
 		self.input_dim = input_dim
 		self.output_dim = output_dim 
-		self.weight = torch.randn(input_dim,output_dim)*sqrt(2/(input_dim))
+		self.weight = torch.randn(input_dim,output_dim)*sqrt(2/(input_dim+output_dim))
 		self.bias = torch.randn(1,output_dim)*sqrt(2/(input_dim+output_dim))
 		self.isTrainable = True
 		return

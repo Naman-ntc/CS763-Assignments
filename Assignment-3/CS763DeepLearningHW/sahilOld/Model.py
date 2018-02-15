@@ -19,6 +19,8 @@ class Model():
 		return self.inputs[lenn]
 	def backward(self,myinput,gradOutput): # input is something extra we dont wanna know
 		#output = self.forward(myinput)
+		# print(gradOutput.abs().mean())
+		# print(self.inputs[len(self.Layers)-1].abs().mean())
 		curr_grad = gradOutput.clone()
 		lenn = len(self.Layers)
 		for i in range(lenn-1,-1,-1):
