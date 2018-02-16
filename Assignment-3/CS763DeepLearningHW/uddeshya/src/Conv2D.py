@@ -50,20 +50,26 @@ class Conv2D():
 		return self.output 
 
 	def backward(self, input, gradOutput):
-		#gradOutput/ gradInput sampe dimenstions as output/ input
+		#### TODO backprop
+		#I need to get gradOutput into the shape of output of this layer if not already like that (maybe grads are commming from Linear)
+		if gradOutput.size() != self.output.size():
+			gradOutput = gradOutput.view(self.output.size[0], self.output.size[1], self.output.size[2], self.output.size[3], -1)
 		self.gradInput = gradOutput.mm(self.weight.t())
 		self.gradWeight = input.t().mm(gradOutput)
 		self.gradBias = gradOutput.sum(dim=0).view(1,self.output_dim)
 		return self.gradInput
+	
 	def __str__(self):
 		str_out = 'Linear Layer with input dimensions (batch firts) {} and output dimensions (batch first) {}'.format(
 			self.input_dim, self.output_dim)
 		return 	str_out
+	
 	def print_param(self):
 		print("Weight :")
 		print(self.weight)
 		print("Bias :")
 		print(self.bias)
+	
 	def clear_grad(self):
 		self.gradInput = 0
 		self.gradWeight = 0	
