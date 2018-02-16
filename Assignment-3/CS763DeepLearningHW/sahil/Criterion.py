@@ -40,5 +40,5 @@ class Criterion():
 		loss = -(logProbabs.sum())/float(lenn)
 
 		##calculate derivative
-		grad = hotTarget*(- 1 + probabs)
+		grad = probabs - hotTarget
 		return grad/float(lenn), loss
