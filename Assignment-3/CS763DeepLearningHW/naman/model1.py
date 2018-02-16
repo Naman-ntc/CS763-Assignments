@@ -74,7 +74,7 @@ def submitPrediction():
 
 def saveModel():
 	import pickle
-	pickle.save(model1,open('output.dat','wb'))
+	pickle.dump(model1,open('output.dat','wb'))
 
 def useOldModel():
 	import pickle
