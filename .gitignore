@@ -14,3 +14,4 @@ __pycache__/
 readData.py
 output.dat
 model2.dat
+*.dat
