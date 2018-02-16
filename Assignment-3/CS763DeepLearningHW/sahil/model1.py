@@ -1,3 +1,5 @@
+import matplotlib
+#matplotlib.use('Agg')
 import torch 
 from readData import *
 from imports import *
@@ -71,7 +73,7 @@ def submitPrediction():
 	yPred = yPred.max(dim=1)[1]
 	N = valData.size()[0]
 	sys.stdout = open("output.dat", "w")
-	print("id,labels\n")
+	print("id,label\n")
 	for i in range(N):
 		print(i,yPred[i])
 

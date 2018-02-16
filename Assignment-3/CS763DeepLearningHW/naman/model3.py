@@ -5,9 +5,6 @@ from readData import *
 from imports import *
 import matplotlib.pyplot as plt
 
-#testDataSize = test.size()[0]
-#test = test.contiguous().view(testDataSize, -1)
-
 
 dataMean = data.mean(dim=0)
 data = data - dataMean
@@ -20,18 +17,34 @@ valData = valData/data.std(dim=0,keepdim=True)
 data = data/data.std(dim=0,keepdim=True)
 ##make the model
 model = Model()
-model.addLayer(Linear(108*108, 6))
-#model.addLayer(ReLU())
-#model.addLayer(Linear(200, 6))
-# model.addLayer(ReLU())
+model.addLayer(Linear(108*108, 600))
+model.addLayer(ReLU())
+model.addLayer(Linear(600, 60))
+model.addLayer(ReLU())
 # model.addLayer(Linear(200, 50))
 # model.addLayer(ReLU())
-# model.addLayer(Linear(50, 6))
+model.addLayer(Linear(60, 6))
 
 lossClass = Criterion()
 
 learningRate = 1e-4
-batchSize = 16
+
+# def train(iterations, whenToPrint):
+# 	global learningRate
+# 	global model
+# 	for i in range(iterations):
+# 		yPred = model.forward(data)
+# 		lossGrad, loss = lossClass.backward(yPred, labels)
+# 		if i%whenToPrint == 0:
+# 			print(i, loss)
+# 		model.clearGradParam()
+# 		model.backward(data, lossGrad)
+# 		for layer in model.Layers:
+# 			if layer.isTrainable:
+# 				layer.weight -= learningRate*layer.gradWeight
+# 				layer.bias -= learningRate*layer.gradBias
+
+batchSize = 128
 plotIndex = 0
 losses = []
 plotIndices = []
@@ -57,6 +70,7 @@ def train(iterations, whenToPrint):
 				layer.bias -= learningRate*layer.gradBias
 		plotIndex += 1
 
+
 def trainAcc():
 	yPred = model.forward(data)
 	N = data.size()[0]
@@ -66,16 +80,6 @@ def valAcc():
 	yPred = model.forward(valData)
 	N = valData.size()[0]
 	return ((yPred.max(dim=1)[1].type(torch.LongTensor) == valLabels.type(torch.LongTensor)).sum())/N
-
-def submitPrediction():
-	import sys
-	yPred = model.forward(valData)
-	yPred = yPred.max(dim=1)[1]
-	N = valData.size()[0]
-	sys.stdout = open("output.dat", "w")
-	print("id,label\n")
-	for i in range(N):
-		print(i,yPred[i])
 
 def makePlot():
 	global losses, plotIndices
@@ -89,5 +93,7 @@ def saveModel():
 def useOldModel():
 	import pickle
 	pickle.load(open('model1.pickle',"rb"))
+
+
 
 

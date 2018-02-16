@@ -1,17 +1,10 @@
+import matplotlib
+#matplotlib.use('Agg')
 import torch 
 from readData import *
 from imports import *
+import matplotlib.pyplot as plt
 
-
-dataSize = data.size()[0]
-#testDataSize = test.size()[0]
-data = data.contiguous().view(dataSize, -1)
-#test = test.contiguous().view(testDataSize, -1)
-valData = data[5000:]
-valLabels = labels[5000:]
-
-data = data[:27000]
-labels = labels[:27000]
 
 dataMean = data.mean(dim=0)
 data = data - dataMean
@@ -36,20 +29,47 @@ lossClass = Criterion()
 
 learningRate = 1e-4
 
+# def train(iterations, whenToPrint):
+# 	global learningRate
+# 	global model
+# 	for i in range(iterations):
+# 		yPred = model.forward(data)
+# 		lossGrad, loss = lossClass.backward(yPred, labels)
+# 		if i%whenToPrint == 0:
+# 			print(i, loss)
+# 		model.clearGradParam()
+# 		model.backward(data, lossGrad)
+# 		for layer in model.Layers:
+# 			if layer.isTrainable:
+# 				layer.weight -= learningRate*layer.gradWeight
+# 				layer.bias -= learningRate*layer.gradBias
+
+batchSize = 128
+plotIndex = 0
+losses = []
+plotIndices = []
+
 def train(iterations, whenToPrint):
 	global learningRate
-	global model
+	global model, dataSize, batchSize, plotIndex, losses, plotIndices
 	for i in range(iterations):
-		yPred = model.forward(data)
-		lossGrad, loss = lossClass.backward(yPred, labels)
+		indices = (torch.randperm(dataSize)[:batchSize]).numpy()
+		currentData = data[indices, :]
+		currentLabels = labels.view(dataSize, 1)[indices, :]
+		yPred = model.forward(currentData)
+		lossGrad, loss = lossClass.backward(yPred, currentLabels)
 		if i%whenToPrint == 0:
 			print(i, loss)
+			losses.append(loss)
+			plotIndices.append(plotIndex)
 		model.clearGradParam()
-		model.backward(data, lossGrad)
+		model.backward(currentData, lossGrad)
 		for layer in model.Layers:
 			if layer.isTrainable:
 				layer.weight -= learningRate*layer.gradWeight
 				layer.bias -= learningRate*layer.gradBias
+		plotIndex += 1
+
 
 def trainAcc():
 	yPred = model.forward(data)
@@ -61,17 +81,10 @@ def valAcc():
 	N = valData.size()[0]
 	return ((yPred.max(dim=1)[1].type(torch.LongTensor) == valLabels.type(torch.LongTensor)).sum())/N
 
-def submitPrediction():
-	import sys
-	yPred = model.forward(test)
-	yPred = yPred.max(dim=1)[1]
-	N = valData.size()[0]
-	sys.stdout = open("output.dat", "w")
-	print("id,labels\n")
-	for i in range(N):
-		print(i,yPred[i])
-
-
+def makePlot():
+	global losses, plotIndices
+	plt.plot(plotIndices, losses)
+	plt.show()
 
 def saveModel():
 	import pickle
@@ -80,3 +93,7 @@ def saveModel():
 def useOldModel():
 	import pickle
 	pickle.load(open('model1.pickle',"rb"))
+
+
+
+

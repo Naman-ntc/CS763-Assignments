@@ -12,3 +12,7 @@ __pycache__/
 *.so
 
 readData.py
+output.dat
+model2.dat
+*.dat
+*.model

@@ -8,5 +8,5 @@ wget https://www.cse.iitb.ac.in/~rdabral/CS763/Test/test.bin
 
 mkdir Data
 mv test.bin Data
-mv train.bin Data
+mv data.bin Data
 mv labels.bin Data
