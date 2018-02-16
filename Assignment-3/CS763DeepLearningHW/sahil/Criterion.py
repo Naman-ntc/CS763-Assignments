@@ -41,4 +41,4 @@ class Criterion():
 
 		##calculate derivative
 		grad = probabs - hotTarget
-		return grad/float(lenn), loss
+		return grad, loss

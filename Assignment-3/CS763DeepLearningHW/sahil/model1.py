@@ -1,7 +1,7 @@
 import torch 
 from readData import *
 from imports import *
-
+import matplotlib.pyplot as plt
 
 #testDataSize = test.size()[0]
 #test = test.contiguous().view(testDataSize, -1)
@@ -29,21 +29,31 @@ model.addLayer(Linear(108*108, 6))
 lossClass = Criterion()
 
 learningRate = 1e-4
+batchSize = 16
+plotIndex = 0
+losses = []
+plotIndices = []
 
 def train(iterations, whenToPrint):
 	global learningRate
-	global model
+	global model, dataSize, batchSize, plotIndex, losses, plotIndices
 	for i in range(iterations):
-		yPred = model.forward(data)
-		lossGrad, loss = lossClass.backward(yPred, labels)
+		indices = (torch.randperm(dataSize)[:batchSize]).numpy()
+		currentData = data[indices, :]
+		currentLabels = labels.view(dataSize, 1)[indices, :]
+		yPred = model.forward(currentData)
+		lossGrad, loss = lossClass.backward(yPred, currentLabels)
 		if i%whenToPrint == 0:
 			print(i, loss)
+			losses.append(loss)
+			plotIndices.append(plotIndex)
 		model.clearGradParam()
-		model.backward(data, lossGrad)
+		model.backward(currentData, lossGrad)
 		for layer in model.Layers:
 			if layer.isTrainable:
 				layer.weight -= learningRate*layer.gradWeight
 				layer.bias -= learningRate*layer.gradBias
+		plotIndex += 1
 
 def trainAcc():
 	yPred = model.forward(data)
@@ -65,6 +75,10 @@ def submitPrediction():
 	for i in range(N):
 		print(i,yPred[i])
 
+def makePlot():
+	global losses, plotIndices
+	plt.plot(plotIndices, losses)
+	plt.show()
 
 def saveModel():
 	import pickle
@@ -73,3 +87,5 @@ def saveModel():
 def useOldModel():
 	import pickle
 	pickle.load(open('model1.pickle',"rb"))
+
+
