@@ -6,7 +6,7 @@ def saveTestResults(model):
 	import readData
 	meann = readData.data.mean(dim = 0)
 	stdd = readData.data.std(dim = 0, keepdim = True)
-	nptest = tf.load('/Users/sahil/Desktop/sem4/computerVision/assgn3/test.bin')
+	nptest = tf.load('../../Data/test.bin')
 	testdata = torch.from_numpy(nptest)
 	testdata = testdata.contiguous().view(testdata.size()[0], -1).type(torch.FloatTensor)
 	testdatanorm = (testdata - meann)/stdd
