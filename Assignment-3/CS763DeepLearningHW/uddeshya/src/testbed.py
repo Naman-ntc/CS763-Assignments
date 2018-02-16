@@ -16,8 +16,10 @@ print('a_out', z1)
 
 print('################################################')
 
-L2 = Conv2D(1,1,3,initialization='Id')
-
+L2 = Conv2D(1,1,kernel_size=5,initialization='Id')
+L3 = Conv2D(1,1,kernel_size=5,initialization='Gauss')
 x2 = torch.rand(1, 1, 10, 10)
 y2 = L2.forward(x2)
+y3 = L3.forward(x2)
 print(y2-x2)
+print(y3)
