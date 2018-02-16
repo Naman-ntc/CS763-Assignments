@@ -44,7 +44,7 @@ class Conv2D():
 					Xneighb_mat[nidx, :] = patch_vec
 			#print('##### Xneighb_mat', Xneighb_mat)
 			y1 = Xneighb_mat.mm(self.kernel.view(self.k_size*self.k_size*self.input_chnl_dim, -1)).t() + self.bias
-			print('##### y1', y1)
+			#print('##### y1', y1)
 			y2 = y1.view(1, ih, iw)
 			self.output[img] = y2
 		return self.output 
