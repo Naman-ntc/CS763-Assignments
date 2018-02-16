@@ -16,6 +16,7 @@ class ReLU():
 		return self.gradInput
 	def __str__(self):
 		string = "ReLU Layer"
+		return string
 	def clear_grad(self):
 		self.gradInput = 0
 		return
