@@ -4,10 +4,10 @@ from math import sqrt
 
 class BatchNorm():
 	"""BatchNorm Layer"""
-	def __init__(self, eps):
+	def __init__(self, input_dim, eps=1e-6):
 		super(BatchNorm, self).__init__()
-		self.gamma = torch.rand(1)
-		self.beta = torch.rand(1)
+		self.weight = torch.rand(1,input_dim)
+		self.bias = torch.rand(1,input_dim)
 		self.eps = eps
 		self.isTrainable = True
 		return
@@ -25,18 +25,18 @@ class BatchNorm():
 	
 	def forward(self,input):
 		xhat,_,_,_,_ = self.standardise(input)
-		gammax = self.gamma * xhat
-		self.output = gammax + self.beta
+		gammax = self.weight * xhat
+		self.output = gammax + self.bias
 		return self.output
 	
 	def backward(self, input, gradOutput):
 		N,D = gradOutput.size()
 		xhat, xmu, ivar, sqrtvar, var = self.standardise(input)
-		self.gradBeta = gradOutput.sum(dim=0)
+		self.gradBias = gradOutput.sum(dim=0)
 		gradGammaX = gradOutput
 		t1 = gradGammaX*xhat
-		self.gradGamma = t1.sum(dim=0)
-		gradXhat = self.gradGamma*self.gamma
+		self.gradWeight = t1.sum(dim=0)
+		gradXhat = self.gradWeight*self.weight
 
 		t2 = gradXhat*xmu
 		gradIvar = t2.sum(dim=0)
@@ -60,19 +60,19 @@ class BatchNorm():
 		return self.gradInput
 	
 	def __str__(self):
-		string = "Batchnorm Layer with gamma %d beta %d eps %d"%(self.gamma,self.beta, self.eps)
+		string = "Batchnorm Layer with gamma %d beta %d eps %d"%(self.weight,self.bias, self.eps)
 		return 	string
 	
 	def print_param(self):
 		print("gamma :")
-		print(self.gamma)
+		print(self.weight)
 		print("beta :")
-		print(self.beta)
+		print(self.bias)
 		print('eps :')
 		print(self.eps)
 	
 	def clear_grad(self):
 		self.gradInput = 0
-		self.gradGamma = 0	
-		self.gradBeta= 0
+		self.gradWeight = 0	
+		self.gradBias= 0
 		return
