@@ -7,7 +7,9 @@ class Dropout(object):
 	def __init__(self):
 		super(Dropout, self).__init__()
 		self.isTrainable = False
-	def forward(self,input,keep_prob):
+	def forward(self,input,keep_prob,mode='Train'):
+		if (mode=='Test'):
+			return input
 		self.mask = torch.rand(input.size()) < keep_prob
 		output = self.mask * input
 		return output
