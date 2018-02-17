@@ -24,6 +24,7 @@ class Trainer():
 		# 		velocity_wt[lid] = torch.zeros(lyr.gradWeight.size())
 		# 		velocity_b[lid] = torch.zeros(lyr.gradBias.size())
 		for eph in range(n_epoch):
+			zero_out_velocity = True
 			val_acc = self.validation_accuracy()
 			train_acc = self.training_accuracy()
 			self.train_acc_record.append(train_acc)
@@ -38,15 +39,16 @@ class Trainer():
 					print('epoch:{}, iter:{}, loss:{}'.format(eph, i, loss))
 				if step%step_interval == 0:
 					self.loss_record.append(loss)
-					self.step_record.append(step)
+					self.step_record.append(step)	
 
 				self.model.clearGradParam()
 				self.model.backward(currentData, lossGrad)
-				if step==0:
+				if zero_out_velocity:
 					for lid,lyr in enumerate(self.model.Layers):
 						if lyr.isTrainable:
 							velocity_wt[lid] = torch.zeros(lyr.gradWeight.size())
 							velocity_b[lid] = torch.zeros(lyr.gradBias.size())
+					zero_out_velocity = False
 				for lid,layer in enumerate(self.model.Layers):
 					if layer.isTrainable:
 						velocity_wt[lid] = beta*velocity_wt[lid] + (1-beta)*layer.gradWeight
