@@ -29,7 +29,7 @@ model.addLayer(Linear(60, 6))
 lossClass = Criterion()
 
 learningRate = 1e-4
-regularization = 1e-3
+par_regularization = 1e-3
 
 batchSize = 128
 plotIndex = 0
@@ -37,7 +37,7 @@ losses = []
 plotIndices = []
 
 def train(iterations, whenToPrint):
-	global learningRate
+	global learningRate,par_regularization
 	global model, dataSize, batchSize, plotIndex, losses, plotIndices
 	for i in range(iterations):
 		indices = (torch.randperm(dataSize)[:batchSize]).numpy()
@@ -46,7 +46,7 @@ def train(iterations, whenToPrint):
 		yPred = model.forward(currentData)
 		lossGrad, loss = lossClass.backward(yPred, currentLabels)
 		if i%whenToPrint == 0:
-			reg_loss = model.regularization_loss(regularization)
+			reg_loss = model.regularization_loss(par_regularization)
 			print("Iter - %d : Training-Loss = %.4f Regularization-Loss = %.4f and Total-loss = %.4f"%(i, loss,reg_loss,loss+reg_loss))
 			losses.append(loss)
 			plotIndices.append(plotIndex)
@@ -54,8 +54,8 @@ def train(iterations, whenToPrint):
 		model.backward(currentData, lossGrad)
 		for layer in model.Layers:
 			if layer.isTrainable:
-				layer.weight -= (learningRate*layer.gradWeight + regularization*layer.weight)
-				layer.bias -= (learningRate*layer.gradBias + regularization*layer.bias)
+				layer.weight -= (learningRate*layer.gradWeight + par_regularization*layer.weight)
+				layer.bias -= (learningRate*layer.gradBias + par_regularization*layer.bias)
 		plotIndex += 1
 
 
