@@ -33,3 +33,5 @@ class Linear():
 		self.gradWeight = 0	
 		self.gradBias = 0
 		return
+	def weights_norm(self):
+		return torch.norm(self.weight) + torch.norm(self.bias)

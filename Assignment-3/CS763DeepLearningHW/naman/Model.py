@@ -35,3 +35,9 @@ class Model():
 	def clearGradParam(self):
 		for Layer in self.Layers:
 			Layer.clear_grad()	
+	def regularization_loss(self,regularization):
+		reg = 0
+		for i in self.Layers:
+			if (i.isTrainable):
+				reg += regularization * i.weights_norm()
+		return reg		
