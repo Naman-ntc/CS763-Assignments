@@ -14,8 +14,15 @@ class Trainer():
 		self.val_acc_record = []
 		print('trainer initialised')
 
-	def train(self, n_epoch=100, n_iter=1000, rec_interval=100, step_interval=5, l_rate=1e-4, lossClass=Criterion()):
+	def train(self, n_epoch=100, n_iter=1000, rec_interval=100, step_interval=5, l_rate=1e-4, beta=0.9, lossClass=Criterion()):
 		step = 0
+		#for momentum
+		velocity_wt = {}
+		velocity_b = {}
+		# for lid,lyr in enumerate(self.model.Layers):
+		# 	if lyr.isTrainable:
+		# 		velocity_wt[lid] = torch.zeros(lyr.gradWeight.size())
+		# 		velocity_b[lid] = torch.zeros(lyr.gradBias.size())
 		for eph in range(n_epoch):
 			val_acc = self.validation_accuracy()
 			train_acc = self.training_accuracy()
@@ -35,10 +42,17 @@ class Trainer():
 
 				self.model.clearGradParam()
 				self.model.backward(currentData, lossGrad)
-				for layer in self.model.Layers:
+				if step==0:
+					for lid,lyr in enumerate(self.model.Layers):
+						if lyr.isTrainable:
+							velocity_wt[lid] = torch.zeros(lyr.gradWeight.size())
+							velocity_b[lid] = torch.zeros(lyr.gradBias.size())
+				for lid,layer in enumerate(self.model.Layers):
 					if layer.isTrainable:
-						layer.weight -= l_rate*layer.gradWeight
-						layer.bias -= l_rate*layer.gradBias
+						velocity_wt[lid] = beta*velocity_wt[lid] + (1-beta)*layer.gradWeight
+						velocity_b[lid] = beta*velocity_b[lid] + (1-beta)*layer.gradBias
+						layer.weight -= l_rate*velocity_wt[lid]
+						layer.bias -= l_rate*velocity_b[lid]
 
 				step += 1
 
