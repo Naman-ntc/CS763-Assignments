@@ -8,15 +8,18 @@ from PCA import *
 import matplotlib.pyplot as plt
 
 
+#print(data.size())
+pca = torch.load('pca.model')
 
-pca = PCA(data)
+data = pca.convert_data(data)
+valData = pca.convert_data(valData)
 
-
+#print(data.size())
 ##make the model
 model = Model()
-model.addLayer(Linear(108*108, 600))
+model.addLayer(Linear(600, 100))
 model.addLayer(ReLU())
-model.addLayer(Linear(600, 60))
+model.addLayer(Linear(100, 60))
 model.addLayer(ReLU())
 # model.addLayer(Linear(200, 50))
 # model.addLayer(ReLU())
@@ -56,11 +59,13 @@ def train(iterations, whenToPrint):
 
 
 def trainAcc():
+	global data
 	yPred = model.forward(data)
 	N = data.size()[0]
 	return ((yPred.max(dim=1)[1].type(torch.LongTensor) == labels.type(torch.LongTensor)).sum())/N
 
 def valAcc():
+	global valData
 	yPred = model.forward(valData)
 	N = valData.size()[0]
 	return ((yPred.max(dim=1)[1].type(torch.LongTensor) == valLabels.type(torch.LongTensor)).sum())/N
