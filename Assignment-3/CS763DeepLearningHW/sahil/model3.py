@@ -17,11 +17,13 @@ valData = valData/data.std(dim=0,keepdim=True)
 data = data/data.std(dim=0,keepdim=True)
 ##make the model
 model = Model()
-model.addLayer(Linear(108*108, 200))
+model.addLayer(Linear(108*108, 500))
+model.addLayer(BatchNorm(500))
 model.addLayer(ReLU())
-model.addLayer(Linear(200, 6))
-# model.addLayer(ReLU())
-# model.addLayer(Linear(200, 50))
+model.addLayer(Linear(500, 40))
+model.addLayer(BatchNorm(40))
+model.addLayer(ReLU())
+model.addLayer(Linear(40, 6))
 # model.addLayer(ReLU())
 # model.addLayer(Linear(50, 6))
 
@@ -107,6 +109,25 @@ def useOldModel():
 
 
 
-train(500, 10)
-print (trainAcc(), valAcc())
+train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(400, 10)
+# learningRate/=3.0
+# train(500, 10)
+# learningRate/=3.0
+# train(500, 10)
+# learningRate/=3.0
+# train(500, 10)
+# learningRate/=3.0
+# train(500, 10)
 

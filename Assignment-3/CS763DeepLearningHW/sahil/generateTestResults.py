@@ -13,7 +13,9 @@ def saveTestResults(model):
 	ypred = model.forward(testdatanorm)
 	ypred = ypred.max(dim = 1)[1]
 	N = testdatanorm.size()[0]
-	sys.stdout = open("output.dat", "w")
+	file = open("output.dat", "w")
+	sys.stdout = file
 	print("id,label\n")
 	for i in range(N):
 	    print(str(i)+","+str(ypred[i]))
+	file.close()

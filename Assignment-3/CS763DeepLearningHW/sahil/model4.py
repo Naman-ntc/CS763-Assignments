@@ -18,12 +18,18 @@ data = data/data.std(dim=0,keepdim=True)
 ##make the model
 model = Model()
 model.addLayer(Linear(108*108, 200))
+model.addLayer(BatchNorm(200))
 model.addLayer(ReLU())
-model.addLayer(Linear(200, 6))
-# model.addLayer(ReLU())
-# model.addLayer(Linear(200, 50))
-# model.addLayer(ReLU())
-# model.addLayer(Linear(50, 6))
+model.addLayer(Linear(200, 50))
+model.addLayer(BatchNorm(50))
+model.addLayer(ReLU())
+model.addLayer(Linear(50, 30))
+model.addLayer(BatchNorm(30))
+model.addLayer(ReLU())
+model.addLayer(Linear(30, 20))
+model.addLayer(BatchNorm(20))
+model.addLayer(ReLU())
+model.addLayer(Linear(20, 6))
 
 lossClass = Criterion()
 
@@ -105,8 +111,4 @@ def useOldModel():
 	pickle.load(open('model1.pickle',"rb"))
 
 
-
-
-train(500, 10)
-print (trainAcc(), valAcc())
 
