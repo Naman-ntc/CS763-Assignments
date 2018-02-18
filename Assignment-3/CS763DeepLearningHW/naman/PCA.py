@@ -1,5 +1,5 @@
 import matplotlib
-#matplotlib.use('Agg')
+matplotlib.use('Agg')
 
 import torch
 import matplotlib.pyplot as plt
@@ -18,6 +18,7 @@ class PCA():
 		self.plot_eigenvalues()
 	def plot_eigenvalues(self):
 		plt.plot(self.eigenvalues)
+		plt.save('eigenvals.png')
 	def give_basis_dim(self,dim):
 		self.dim = dim
 		self.eigenbasis = self.eigenbasis[:,:dim]
