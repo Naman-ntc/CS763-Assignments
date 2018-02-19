@@ -13,8 +13,9 @@ def getTarget (pathToInput):
 	return input
 
 def getModel(pathToModel):
-	print(pathToModel)
-	model = torch.load(pathToModel)
+	os.system("cp " + pathToModel + " visiondata.bin")
+	model = torch.load("visiondata.bin")
+	os.system("rm visiondata.bin")
 	return model
 
 argumentList = sys.argv[1:]
@@ -24,9 +25,9 @@ for i in range(int(len(argumentList)/2)):
 
 
 modelFile = arguments["-modelName"] + "/model.bin"
-print(modelFile)
+
 model = getModel(modelFile)
-testData = getTarget(arguments["-modelName"])
+testData = getTarget(arguments["-data"])
 
 testData = (testData - model.dataMean)/model.dataVariance
 
