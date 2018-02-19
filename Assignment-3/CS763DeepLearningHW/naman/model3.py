@@ -54,8 +54,10 @@ def train(iterations, whenToPrint):
 		model.backward(currentData, lossGrad)
 		for layer in model.Layers:
 			if layer.isTrainable:
-				layer.weight -= (learningRate*layer.gradWeight + par_regularization*layer.weight)
-				layer.bias -= (learningRate*layer.gradBias + par_regularization*layer.bias)
+				layer.weight -= learningRate*((1-momentum)*layer.gradWeight + momentum*layer.momentumWeight) + par_regularization*layer.weight
+				layer.bias -= learningRate*((1-momentum)*layer.gradBias + momentum*layer.momentumBias) + par_regularization*layer.bias
+				#layer.weight -= (learningRate*layer.gradWeight + par_regularization*layer.weight)
+				#layer.bias -= (learningRate*layer.gradBias + par_regularization*layer.bias)
 		plotIndex += 1
 
 
