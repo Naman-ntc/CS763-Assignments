@@ -46,7 +46,7 @@ learningRate = 1e-4
 # 				layer.weight -= learningRate*layer.gradWeight
 # 				layer.bias -= learningRate*layer.gradBias
 
-batchSize = 128
+batchSize = 4
 plotIndex = 0
 losses = []
 plotIndices = []
