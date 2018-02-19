@@ -8,15 +8,22 @@ from PCA import *
 import matplotlib.pyplot as plt
 
 
-#print(data.size())
-pca = torch.load('pca.model')
 
-data = pca.convert_data(data)
-valData = pca.convert_data(valData)
 
-#print(data.size())
+dataMean = data.mean(dim=0)
+data = data - dataMean
+valData = valData - dataMean
+#test = test - dataMean
+
+
+valData = valData/data.std(dim=0,keepdim=True)
+#test = test/data.std(dim=0,keepdim=True)
+data = data/data.std(dim=0,keepdim=True)
+
 ##make the model
-model = Model()
+model = Model()	
+model.addLayer(Linear(108*108, 600))
+model.addLayer(ReLU())
 model.addLayer(Linear(600, 100))
 model.addLayer(ReLU())
 model.addLayer(Linear(100, 60))
@@ -27,7 +34,7 @@ model.addLayer(Linear(60, 6))
 
 lossClass = Criterion()
 
-learningRate = 1e-4
+learningRate = 1e-2
 par_regularization = 1e-3
 
 batchSize = 128

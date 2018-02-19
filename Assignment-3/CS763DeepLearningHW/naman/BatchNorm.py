@@ -9,8 +9,8 @@ class BatchNorm(object):
 	def __init__(self, input_dim,isTrainable=True,momentum=0.9,weight=1,bias=0):
 		super(BatchNorm, self).__init__()
 		self.isTrainable = isTrainable
-		self.running_mean = torch.zeros(input_dim).mean(dim=0).type(torch.FloatTensor)
-		self.running_var = torch.ones(input_dim).mean(dim=0).type(torch.FloatTensor)
+		self.running_mean = torch.zeros(input_dim).type(torch.DoubleTensor)
+		self.running_var = torch.ones(input_dim).type(torch.DoubleTensor)
 		self.momentum = momentum
 		if ((type(weight)==type(1)) and weight==1):
 			weight = self.running_var
@@ -18,8 +18,8 @@ class BatchNorm(object):
 			bias = self.running_mean	
 		self.weight = weight
 		self.bias=bias
-		self.momentumWeight = torch.zeros(self.weight.size())
-		self.momentumBias = torch.zeros(self.bias.size())
+		self.momentumWeight = torch.zeros(self.weight.size()).type(torch.DoubleTensor)
+		self.momentumBias = torch.zeros(self.bias.size()).type(torch.DoubleTensor)
 	def forward(self,input,mode='train'):
 		#if (mode=='train'):
 		#elif (mode=='test'):
@@ -44,7 +44,8 @@ class BatchNorm(object):
 		gradMean = gradMean1 + gradMean2
 		#print(gradMean.type())
 		gradInput1 = (gradOutput*self.weight/torch.sqrt(self.sample_var + 1e-6))
-		gradInput2 = (torch.ones(input.size())).type(torch.FloatTensor) * gradMean * 1./N  
+		gradInput2 = (torch.ones(input.size())).type(torch.DoubleTensor) * gradMean 
+		gradInput2 = gradInput2/N  
 		gradInput3 = (input-self.sample_mean) * gradVar * 2./N
 		gradInput = gradInput1 + gradInput2 + gradInput3
 		self.momentumWeight = momentum*self.momentumWeight + (1- momentum)*self.gradWeight
@@ -55,8 +56,8 @@ class BatchNorm(object):
 		self.gradweight = 0
 		return	
 	def reset_running_pars(self):
-		self.running_mean = torch.zeros(input_dim).mean(dim=0).type(torch.FloatTensor)
-		self.running_var = torch.ones(input_dim).mean(dim=0).type(torch.FloatTensor)
+		self.running_mean = torch.zeros(input_dim).mean(dim=0).type(torch.DoubleTensor)
+		self.running_var = torch.ones(input_dim).mean(dim=0).type(torch.DoubleTensor)
 	def __str__(self):
 		string = "This is a batch normalisation layer with input dimension = " + str(self.bias.size())
 		return string
@@ -68,4 +69,6 @@ class BatchNorm(object):
 		print("The beta matrix (that counteracts the mean) is: ")
 		print(self.bias)
 		print("Beta has a mean value of " + str(self.bias.mean()))
-		return 	
+		return 
+	def weights_norm(self):
+		return torch.norm(self.weight) + torch.norm(self.bias)	

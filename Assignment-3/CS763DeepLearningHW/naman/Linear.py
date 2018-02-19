@@ -10,11 +10,11 @@ class Linear():
 		super(Linear, self).__init__()
 		self.input_dim = input_dim
 		self.output_dim = output_dim 
-		self.weight = torch.randn(input_dim,output_dim)*sqrt(2/(input_dim))
-		self.bias = torch.randn(1,output_dim)*sqrt(2/(input_dim+output_dim))
+		self.weight = torch.randn(input_dim,output_dim).type(torch.DoubleTensor)*sqrt(2/(input_dim))
+		self.bias = torch.randn(1,output_dim).type(torch.DoubleTensor)*sqrt(2/(input_dim+output_dim))
 		self.isTrainable = True
-		self.momentumWeight = torch.zeros(self.weight.size())
-		self.momentumBias = torch.zeros(self.bias.size())
+		self.momentumWeight = torch.zeros(self.weight.size()).type(torch.DoubleTensor)
+		self.momentumBias = torch.zeros(self.bias.size()).type(torch.DoubleTensor)
 		return
 	def forward(self,input):
 		self.output = input.mm(self.weight) + self.bias

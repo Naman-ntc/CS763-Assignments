@@ -69,4 +69,6 @@ class BatchNorm(object):
 		print("The beta matrix (that counteracts the mean) is: ")
 		print(self.bias)
 		print("Beta has a mean value of " + str(self.bias.mean()))
-		return 	
+		return 
+	def weights_norm(self):
+		return torch.norm(self.weight) + torch.norm(self.bias)		
