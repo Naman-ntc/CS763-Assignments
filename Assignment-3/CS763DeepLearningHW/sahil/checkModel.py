@@ -1,6 +1,7 @@
+import sys
+sys.path.append('src')
 from imports import *
 import torch
-import sys
 import torchfile as tf
 
 def makeModel(pathToFile):

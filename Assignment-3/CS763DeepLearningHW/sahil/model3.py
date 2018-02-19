@@ -1,6 +1,8 @@
 import matplotlib
 #matplotlib.use('Agg')
 import torch 
+import sys
+sys.path.append('src')
 from readData import *
 from imports import *
 import matplotlib.pyplot as plt
@@ -46,7 +48,7 @@ learningRate = 1e-4
 # 				layer.weight -= learningRate*layer.gradWeight
 # 				layer.bias -= learningRate*layer.gradBias
 
-batchSize = 4
+batchSize = 128
 plotIndex = 0
 losses = []
 plotIndices = []

@@ -37,3 +37,7 @@ class Model():
 	def clearGradParam(self):
 		for Layer in self.Layers:
 			Layer.clear_grad()	
+
+	def saveMeanVariance(self, mean, variance):
+		self.dataMean = mean
+		self.dataVariance = variance
