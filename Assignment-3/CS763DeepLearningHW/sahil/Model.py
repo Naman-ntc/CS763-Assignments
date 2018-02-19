@@ -8,8 +8,10 @@ class Model():
 		super(Model, self).__init__()
 		self.Layers = []
 		self.isTrain = True
+	
 	def addLayer(self,Layer):
 		self.Layers.append(Layer)	
+	
 	def forward(self,myinput):
 		lenn = len(self.Layers)
 		self.inputs = [None]*(1+lenn)
@@ -24,7 +26,7 @@ class Model():
 		for i in range(lenn-1,-1,-1):
 			curr_grad = (self.Layers[i]).backward(self.inputs[i], curr_grad)
 		#return curr_grad
-		return
+		return 
 	def dispGradParam(self):
 		lenn = len(self.Layers)
 		for i in range(lenn-1,-1,-1):

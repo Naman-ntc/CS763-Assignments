@@ -1,6 +1,0 @@
-2
-linear 192 10
-relu
-linear 10 3
-/path/to/weight_sample_2.bin
-/path/to/bias_sample_2.bin

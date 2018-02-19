@@ -109,7 +109,8 @@ def useOldModel():
 
 
 
-train(400, 10)
+train(200, 10)
+makePlot()
 # learningRate/=3.0
 # train(400, 10)
 # learningRate/=3.0
