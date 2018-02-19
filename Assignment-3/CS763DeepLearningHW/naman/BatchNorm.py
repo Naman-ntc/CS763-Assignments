@@ -2,6 +2,8 @@ import numpy
 import torch
 from math import sqrt
 
+momentum = 0.8
+
 class BatchNorm(object):
 	"""docstring for BatchNorm"""
 	def __init__(self, input_dim,isTrainable=True,momentum=0.9,weight=1,bias=0):
@@ -16,6 +18,8 @@ class BatchNorm(object):
 			bias = self.running_mean	
 		self.weight = weight
 		self.bias=bias
+		self.momentumWeight = torch.zeros(self.weight.size())
+		self.momentumBias = torch.zeros(self.bias.size())
 	def forward(self,input,mode='train'):
 		#if (mode=='train'):
 		#elif (mode=='test'):
@@ -43,6 +47,8 @@ class BatchNorm(object):
 		gradInput2 = (torch.ones(input.size())).type(torch.FloatTensor) * gradMean * 1./N  
 		gradInput3 = (input-self.sample_mean) * gradVar * 2./N
 		gradInput = gradInput1 + gradInput2 + gradInput3
+		self.momentumWeight = momentum*self.momentumWeight + (1- momentum)*self.gradWeight
+		self.momentumBias = momentum*self.momentumBias + (1- momentum)*self.gradBias
 		return gradInput
 	def clear_grad(self):
 		self.gradbias = 0
@@ -56,10 +62,10 @@ class BatchNorm(object):
 		return string
 	def print_param(self):
 		print("The gamma matrix (that counteracts the variance) is: ")
-		print(self.gamma)
-		print("Gamma has a mean value of " + str(self.gamma.mean()))
+		print(self.weight)
+		print("Gamma has a mean value of " + str(self.weight.mean()))
 		print("")
 		print("The beta matrix (that counteracts the mean) is: ")
-		print(self.beta)
-		print("Beta has a mean value of " + str(self.beta.mean()))
+		print(self.bias)
+		print("Beta has a mean value of " + str(self.bias.mean()))
 		return 	
