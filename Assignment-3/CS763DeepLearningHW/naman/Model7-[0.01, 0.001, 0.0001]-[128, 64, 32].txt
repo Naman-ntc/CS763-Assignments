@@ -1,0 +1,1 @@
+Iter - 0 : Training-Loss = 5.0214 Regularization-Loss = 0.5743 and Total-loss = 5.5957
