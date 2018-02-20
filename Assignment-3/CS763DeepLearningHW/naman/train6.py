@@ -102,7 +102,7 @@ def Try_em_all():
 			for i in range(10):
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
-				par_regularization/=10
+				reg/=10
 				print(trainAcc(model))
 				print(valAcc(model))	
 			if (trainAcc(model) > bestAcc):	

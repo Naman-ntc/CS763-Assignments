@@ -82,7 +82,8 @@ def Try_em_all():
 		for bs in batchSize:
 			stringg = "Model2"+"-"+str(par_regularization)+"-"+str(batchSize)+".txt"
 			import sys
-			sys.stdout = open(stringg,'w') model = Model()	
+			sys.stdout = open(stringg,'w') 
+			model = Model()	
 			model.addLayer(Linear(108*108, 1200))
 			model.addLayer(BatchNorm(1200))
 			model.addLayer(ReLU())
@@ -101,7 +102,7 @@ def Try_em_all():
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
 				#if (i==1):
-				par_regularization /= 10
+				reg /= 10
 				print(trainAcc(model))
 				print(valAcc(model))
 			if (trainAcc(model) > bestAcc):	
