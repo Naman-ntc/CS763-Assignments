@@ -41,3 +41,9 @@ class Model():
 	def saveMeanVariance(self, mean, variance):
 		self.dataMean = mean
 		self.dataVariance = variance
+	def regularization_loss(self,regularization):
+		reg = 0
+		for i in self.Layers:
+			if (i.isTrainable):
+				reg += regularization * i.weights_norm()
+		return reg			

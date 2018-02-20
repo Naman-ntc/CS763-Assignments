@@ -9,7 +9,7 @@ class Criterion():
 	def forward(self, input, target):
 		lenn = input.size()[0]
 		indices = target.view(lenn).numpy()
-		hotTarget = torch.zeros(input.size())
+		hotTarget = (torch.zeros(input.size())).type(torch.DoubleTensor)
 		hotTarget[np.arange(lenn), indices] = 1
 
 		##convert input using softmax
@@ -19,14 +19,14 @@ class Criterion():
 		
 		##compute log probabs for cross entropy
 		#probabs = hotTarget*probabs +  (1 - hotTarget)*(1 - probabs)
-		logProbabs = ((probabs+1e-8).log())*hotTarget
+		logProbabs = ((probabs).log())*hotTarget
 		return -(logProbabs.sum())/float(lenn)
 
 	def backward(self, input, target):
 		lenn = input.size()[0]
 		b = input.size()[1]
 		indices = target.view(lenn).numpy()
-		hotTarget = torch.zeros(input.size())
+		hotTarget = (torch.zeros(input.size())).type(torch.DoubleTensor)
 		hotTarget[np.arange(lenn), indices] = 1
 
 		##convert input using softmax
@@ -36,9 +36,10 @@ class Criterion():
 		#probabs = hotTarget*probabs +  (1 - hotTarget)*(1 - probabs)
 		
 		##calculate the loss
-		logProbabs = ((probabs+1e-8).log())*hotTarget 
+		logProbabs = (probabs).log()*hotTarget 
 		loss = -(logProbabs.sum())/float(lenn)
 
 		##calculate derivative
 		grad = probabs - hotTarget
+		grad = grad/float(lenn)
 		return grad, loss
