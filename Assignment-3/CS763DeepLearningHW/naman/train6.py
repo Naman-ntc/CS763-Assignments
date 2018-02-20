@@ -72,7 +72,7 @@ def useOldModel():
 
 def Try_em_all():
 	learningRate = 1e-2
-	par_regularization = [1e-3,1e-4,1e-5] 
+	par_regularization = [1e-2,1e-3,1e-4] 
 	batchSize = [128,64,32]
 	plotIndex = 0
 	losses = []
@@ -100,8 +100,7 @@ def Try_em_all():
 			for i in range(10):
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
-				if (i==1):
-					par_regularization=0
+				par_regularization/=10
 				print(trainAcc(model))
 				print(valAcc(model))	
 			torch.save(model,open(stringg,'wb'))
