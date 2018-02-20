@@ -77,10 +77,12 @@ def Try_em_all():
 	plotIndex = 0
 	losses = []
 	plotIndices = []
-	
+	bestAcc = 0
 	for reg in par_regularization:
 		for bs in batchSize:
-			stringg = "Model6"+"-"+str(par_regularization)+"-"+str(batchSize)
+			stringg = "Model3"+"-"+str(par_regularization)+"-"+str(batchSize)+".txt"
+			import sys
+			sys.stdout = open(stringg,'w') 			
 			model = Model()	
 			model.addLayer(Linear(108*108, 2400))
 			model.addLayer(BatchNorm(2400))
@@ -103,4 +105,5 @@ def Try_em_all():
 				par_regularization/=10
 				print(trainAcc(model))
 				print(valAcc(model))	
-			torch.save(model,open(stringg,'wb'))
+			if (trainAcc(model) > bestAcc):	
+				torch.save(model,open("model3.model",'wb'))
