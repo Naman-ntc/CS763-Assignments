@@ -80,7 +80,7 @@ def Try_em_all():
 	bestAcc = 0
 	for reg in par_regularization:
 		for bs in batchSize:
-			stringg = "Model1"+"-"+str(reg)+"-"+str(bs)+".txt"
+			stringg = "Model4||reg="+str(reg)+"||bs="+str(bs)+".txt"
 			import sys
 			sys.stdout = open(stringg,'w') 
 			model = Model()	
@@ -94,7 +94,7 @@ def Try_em_all():
 
 			lossClass = Criterion()
 
-			iterations_count = 128*3000//bs
+			iterations_count = 128*6000//bs
 			lr_decay_iter = iterations_count//10
 			reg_zero = 2*iterations_count//10
 

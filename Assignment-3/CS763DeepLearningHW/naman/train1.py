@@ -81,7 +81,7 @@ def Try_em_all():
 	bestAcc = 0
 	for reg in par_regularization:
 		for bs in batchSize:
-			stringg = "Model1"+"-"+str(reg)+"-"+str(bs)+".txt"
+			stringg = "Model1||reg="+str(reg)+"||bs="+str(bs)+".txt"
 			import sys
 			sys.stdout = open(stringg,'w') 
 			model = Model()	
