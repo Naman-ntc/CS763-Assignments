@@ -80,7 +80,9 @@ def Try_em_all():
 	plotIndices = []
 	bestAcc = 0
 	for reg in par_regularization:
+		Oldreg = reg 
 		for bs in batchSize:
+			reg = Oldreg
 			learningRate = 3e-2
 			stringg = "Model1||reg="+str(reg)+"||bs="+str(bs)+".txt"
 			import sys
