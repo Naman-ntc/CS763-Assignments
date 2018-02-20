@@ -80,6 +80,7 @@ def Try_em_all():
 	bestAcc = 0
 	for reg in par_regularization:
 		for bs in batchSize:
+			learningRate = 3e-2
 			stringg = "Model2||reg="+str(reg)+"||bs="+str(bs)+".txt"
 			import sys
 			sys.stdout = open(stringg,'w') 
@@ -95,10 +96,10 @@ def Try_em_all():
 			lossClass = Criterion()
 
 			iterations_count = 128*4000//bs
-			lr_decay_iter = iterations_count//8
+			lr_decay_iter = iterations_count//6
 			reg_zero = 2*iterations_count//10
 
-			for i in range(8):
+			for i in range(6):
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
 				#if (i==1):
