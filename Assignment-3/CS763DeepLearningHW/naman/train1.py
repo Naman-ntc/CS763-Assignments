@@ -73,7 +73,7 @@ def useOldModel():
 
 def Try_em_all():
 	learningRate = 1e-1
-	par_regularization = [1e-3,1e-4,1e-5] 
+	par_regularization = [1e-4,1e-5,1e-6] 
 	batchSize = [128,64,32]
 	plotIndex = 0
 	losses = []
