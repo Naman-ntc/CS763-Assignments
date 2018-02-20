@@ -99,10 +99,10 @@ def Try_em_all():
 			lossClass = Criterion()
 
 			iterations_count = 128*6000/bs
-			lr_decay_iter = iterations_count/7
+			lr_decay_iter = iterations_count/8
 			reg_zero = 2*iterations_count/10
 
-			for i in range(7):
+			for i in range(8):
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
 				reg/=10
