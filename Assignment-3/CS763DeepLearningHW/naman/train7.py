@@ -71,7 +71,7 @@ def useOldModel():
 
 
 def Try_em_all():
-	learningRate = 1e-1
+	learningRate = 1e-2
 	par_regularization = [1e-3,1e-4,1e-5] 
 	batchSize = [128,64,32]
 	plotIndex = 0
@@ -80,20 +80,20 @@ def Try_em_all():
 	
 	for reg in par_regularization:
 		for bs in batchSize:
-			stringg = "Model3"+"-"+str(par_regularization)+"-"+str(batchSize)
+			stringg = "Model5"+"-"+str(par_regularization)+"-"+str(batchSize)
 			model = Model()	
-			model.addLayer(Linear(108*108, 800))
-			model.addLayer(BatchNorm(800))
+			model.addLayer(Linear(108*108, 900))
+			#model.addLayer(BatchNorm(800))
 			model.addLayer(ReLU())
-			model.addLayer(Linear(800, 80))
-			model.addLayer(BatchNorm(80))
+			model.addLayer(Linear(900, 100))
+			#model.addLayer(BatchNorm(80))
 			model.addLayer(ReLU())
-			model.addLayer(Linear(80, 6))
+			#model.addLayer(Linear(80, 6))
 
 			lossClass = Criterion()
 
-			iterations_count = 128*4000//bs
-			lr_decay_iter = iterations_count//8
+			iterations_count = 128*3000//bs
+			lr_decay_iter = iterations_count//10
 			reg_zero = 2*iterations_count//10
 
 			for i in range(10):
