@@ -107,3 +107,6 @@ def Try_em_all():
 				print(valAcc(model))
 			if (trainAcc(model) > bestAcc):	
 				torch.save(model,open("model1.model",'wb'))
+
+
+Try_em_all()				
