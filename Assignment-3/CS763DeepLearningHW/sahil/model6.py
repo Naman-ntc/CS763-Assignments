@@ -1,14 +1,13 @@
 import matplotlib
 
-import torch 
 import sys
 sys.path.append('src')
-
+import torch 
 from readData import *
 from imports import *
 import matplotlib.pyplot as plt
 
-
+print("Read Data")
 dataMean = data.mean(dim=0)
 data = data - dataMean
 valData = valData - dataMean
@@ -71,45 +70,40 @@ def useOldModel():
 
 
 
+learningRate = 1e-2
+par_regularization = [1e-3] 
+batchSize = [64]
+plotIndex = 0
+losses = []
+plotIndices = []
+bestAcc = 0
+for reg in par_regularization:
+	Oldreg = reg 
+	for bs in batchSize:
+		print("starting training")
+		reg = Oldreg
+		learningRate = 3e-2
+		model = Model()	
+		model.addLayer(Linear(108*108, 900))
+		#model.addLayer(BatchNorm(800))
+		model.addLayer(ReLU())
+		model.addLayer(Linear(900, 100))
+		#model.addLayer(BatchNorm(80))
+		model.addLayer(ReLU())
+		#model.addLayer(Linear(80, 6))
 
-def Try_em_all():
-	learningRate = 1e-2
-	par_regularization = [1e-3] 
-	batchSize = [64]
-	plotIndex = 0
-	losses = []
-	plotIndices = []
-	bestAcc = 0
-	for reg in par_regularization:
-		Oldreg = reg 
-		for bs in batchSize:
-			reg = Oldreg
-			learningRate = 3e-2
-			stringg = "Model7||reg="+str(reg)+"||bs="+str(bs)+".txt"
-			import sys
-			sys.stdout = open(stringg,'w') 
-			model = Model()	
-			model.addLayer(Linear(108*108, 900))
-			#model.addLayer(BatchNorm(800))
-			model.addLayer(ReLU())
-			model.addLayer(Linear(900, 100))
-			#model.addLayer(BatchNorm(80))
-			model.addLayer(ReLU())
-			#model.addLayer(Linear(80, 6))
+		lossClass = Criterion()
 
-			lossClass = Criterion()
+		iterations_count = 128*8000//bs
+		lr_decay_iter = iterations_count//8
+		reg_zero = 2*iterations_count//10
 
-			iterations_count = 128*8000//bs
-			lr_decay_iter = iterations_count//8
-			reg_zero = 2*iterations_count//10
+		for i in range(8):
+			train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
+			learningRate /= 10
+			reg/=10
+			print(trainAcc(model))
+			print(valAcc(model))
+		if (trainAcc(model) > bestAcc):	
+			torch.save(model,open("model7.model",'wb'))
 
-			for i in range(8):
-				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
-				learningRate /= 10
-				reg/=10
-				print(trainAcc(model))
-				print(valAcc(model))
-			if (trainAcc(model) > bestAcc):	
-				torch.save(model,open("model7.model",'wb'))
-
-Try_em_all()				
