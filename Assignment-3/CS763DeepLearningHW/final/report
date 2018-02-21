@@ -44,7 +44,7 @@ No		Model 														trainAcc 			valAcc		Loss
 
 
       										*******************BEST MODEL*****************
-17		2 hidden layers (108*108->900->6) 							72.55				58.86		0.75 (batch-size -> 32)	
+17		2 hidden layers (108*108->900->6) 							74.5				57.94		0.75 (batch-size -> 32)	
 											*******************BEST MODEL*****************
 
 19 		3 hidden layers (108*108->900->100->6)						80					56.72		0.85 (batch-size -> 64)
