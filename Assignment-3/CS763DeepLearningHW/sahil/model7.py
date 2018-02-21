@@ -91,7 +91,7 @@ for reg in par_regularization:
 		model.addLayer(Linear(108*108, 900))
 		#model.addLayer(BatchNorm(800))
 		model.addLayer(ReLU())
-		model.addLayer(Linear(900, 6))
+		model.addLayer(Linear(900, 100))
 		#model.addLayer(BatchNorm(80))
 		model.addLayer(ReLU())
 		#model.addLayer(Linear(80, 6))
@@ -109,7 +109,7 @@ for reg in par_regularization:
 			print(trainAcc(model))
 			print(valAcc(model))
 		if (trainAcc(model) > bestAcc):	
-			torch.save(model,open("model7.model",'wb'))
+			torch.save(model,open("model8.model",'wb'))
 
 
 
