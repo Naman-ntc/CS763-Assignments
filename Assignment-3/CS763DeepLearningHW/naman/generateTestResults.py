@@ -8,7 +8,7 @@ def saveTestResults(model):
 	stdd = readData.data.std(dim = 0, keepdim = True)
 	nptest = tf.load('../../Data/test.bin')
 	testdata = torch.from_numpy(nptest)
-	testdata = testdata.contiguous().view(testdata.size()[0], -1).type(torch.FloatTensor)
+	testdata = testdata.contiguous().view(testdata.size()[0], -1).type(torch.DoubleTensor)
 	testdatanorm = (testdata - meann)/stdd
 	ypred = model.forward(testdatanorm)
 	ypred = ypred.max(dim = 1)[1]
