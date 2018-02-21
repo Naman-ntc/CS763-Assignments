@@ -7,10 +7,18 @@ import numpy as np
 import os
 
 def getTarget (pathToInput):
-	input = tf.load(pathToInput)
-	input = torch.from_numpy(input)
-	input = input.type(torch.DoubleTensor)
-	return input
+	# input = tf.load(pathToInput)
+	# input = torch.from_numpy(input)
+	# input = input.type(torch.DoubleTensor)
+	npData = tf.load(pathToInput)
+
+	totalData = torch.from_numpy(npData)
+
+	totalData = totalData.contiguous().view(totalData.size()[0], -1).type(torch.DoubleTensor)
+
+	data = totalData[:]
+
+	return data
 
 def getModel(pathToModel):
 	os.system("cp " + pathToModel + " visiondata.bin")
@@ -29,6 +37,8 @@ modelFile = arguments["-modelName"] + "/model.bin"
 model = getModel(modelFile)
 testData = getTarget(arguments["-data"])
 
+model.dataVariance = model.dataVariance.view(108*108)
+#print(model.dataMean.size(), model.dataVariance.size())
 testData = (testData - model.dataMean)/model.dataVariance
 
 ypred = model.forward(testData)
