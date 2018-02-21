@@ -43,7 +43,7 @@ def train(model,lossClass,iterations, whenToPrint, batchSize, learningRate, par_
 				layer.bias -= learningRate*((1-momentum)*layer.gradBias + momentum*layer.momentumBias) + par_regularization*layer.bias
 				#layer.weight -= (learningRate*layer.gradWeight + par_regularization*layer.weight)
 				#layer.bias -= (learningRate*layer.gradBias + par_regularization*layer.bias)
-		plotIndex += 1
+		#plotIndex += 1
 
 
 def trainAcc(model):
