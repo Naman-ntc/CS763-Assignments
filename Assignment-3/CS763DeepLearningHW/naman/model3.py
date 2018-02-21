@@ -18,18 +18,18 @@ valData = valData/data.std(dim=0,keepdim=True)
 data = data/data.std(dim=0,keepdim=True)
 ##make the model
 model = Model()	
-model.addLayer(Linear(108*108, 600))
-model.addLayer(BatchNorm(600))
+model.addLayer(Linear(108*108, 800))
+model.addLayer(BatchNorm(800))
 model.addLayer(ReLU())
-model.addLayer(Linear(600, 60))
-model.addLayer(BatchNorm(60))
+model.addLayer(Linear(800, 80))
+model.addLayer(BatchNorm(80))
 model.addLayer(ReLU())
-model.addLayer(Linear(60, 6))
+model.addLayer(Linear(80, 6))
 
 lossClass = Criterion()
 
 learningRate = 1e-2
-par_regularization = 1e-4
+par_regularization = 1e-3
 
 batchSize = 128
 plotIndex = 0
