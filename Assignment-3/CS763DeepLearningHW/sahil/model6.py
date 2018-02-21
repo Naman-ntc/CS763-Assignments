@@ -1,9 +1,7 @@
 import matplotlib
+matplotlib.use('Agg')
 
 import torch 
-import sys
-sys.path.append('src')
-
 from readData import *
 from imports import *
 import matplotlib.pyplot as plt
