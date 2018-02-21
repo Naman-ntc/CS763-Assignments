@@ -18,26 +18,23 @@ valData = valData/data.std(dim=0,keepdim=True)
 data = data/data.std(dim=0,keepdim=True)
 ##make the model
 model = Model()	
-model.addLayer(Linear(108*108, 800))
-model.addLayer(BatchNorm(800))
+model.addLayer(Linear(108*108, 1000))
 model.addLayer(ReLU())
-model.addLayer(Linear(800, 80))
-model.addLayer(BatchNorm(80))
+model.addLayer(Linear(1000, 100))
 model.addLayer(ReLU())
-model.addLayer(Linear(80, 6))
-
+#model.addLayer(Linear(120,6))
 lossClass = Criterion()
 
 learningRate = 1e-2
 par_regularization = 1e-3
 
-batchSize = 128
+batchSize = 64
 plotIndex = 0
 losses = []
 plotIndices = []
 
-def train(iterations, whenToPrint):
-	global learningRate,par_regularization
+def train(iterations, learningRate, par_regularization, whenToPrint):
+	#global learningRate,par_regularization
 	global model, dataSize, batchSize, plotIndex, losses, plotIndices
 	for i in range(iterations):
 		indices = (torch.randperm(dataSize)[:batchSize]).numpy()
@@ -56,8 +53,7 @@ def train(iterations, whenToPrint):
 			if layer.isTrainable:
 				layer.weight -= learningRate*((1-momentum)*layer.gradWeight + momentum*layer.momentumWeight) + par_regularization*layer.weight
 				layer.bias -= learningRate*((1-momentum)*layer.gradBias + momentum*layer.momentumBias) + par_regularization*layer.bias
-				#layer.weight -= (learningRate*layer.gradWeight + par_regularization*layer.weight)
-				#layer.bias -= (learningRate*layer.gradBias + par_regularization*layer.bias)
+				
 		plotIndex += 1
 
 
