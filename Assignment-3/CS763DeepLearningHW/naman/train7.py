@@ -85,7 +85,7 @@ def Try_em_all():
 		for bs in batchSize:
 			reg = Oldreg
 			learningRate = 3e-2
-			stringg = "Model7||reg="+str(reg)+"||bs="+str(bs)+".txt"
+			stringg = "Model7-Let's-see.txt"
 			import sys
 			sys.stdout = open(stringg,'w') 
 			model = Model()	
@@ -95,21 +95,21 @@ def Try_em_all():
 			model.addLayer(Linear(900, 100))
 			#model.addLayer(BatchNorm(80))
 			model.addLayer(ReLU())
-			#model.addLayer(Linear(80, 6))
+			model.addLayer(Linear(100, 6))
 
 			lossClass = Criterion()
 
-			iterations_count = 128*8000//bs
-			lr_decay_iter = iterations_count//8
+			iterations_count = 64*8000//bs
+			lr_decay_iter = iterations_count//5
 			reg_zero = 2*iterations_count//10
 
-			for i in range(8):
+			for i in range(5):
 				train(model,lossClass,lr_decay_iter,10, bs ,learningRate, reg)
 				learningRate /= 10
 				reg/=10
 				print(trainAcc(model))
 				print(valAcc(model))
 			if (trainAcc(model) > bestAcc):	
-				torch.save(model,open("model7.model",'wb'))
+				torch.save(model,open("model-lets-see.model",'wb'))
 
 Try_em_all()				
