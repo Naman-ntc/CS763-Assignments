@@ -64,8 +64,7 @@ end
 
 [~,~,V] = svd(A);
 Phat = V(:,12);
-Phat = reshape(Phat,[4,3])'; 
-
+Phat = reshape(Phat,[4,3])'; K_
 P = inv(T)*Phat*U;
 
 % P = [M | -M X_0]
