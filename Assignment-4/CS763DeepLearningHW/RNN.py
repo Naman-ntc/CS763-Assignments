@@ -22,7 +22,7 @@ class RNN(object):
 			temp_input = torch.cat(input,hidden[i,:])
 			self.hidden[i+1,:] = temp_input.mm(self.W) + self.b
 			self.hidden[i+1,:] = torch.tanh(self.hidden[i+1,:])
-		self.h0 = hidden[ncells,:]
+		self.h0 = self.hidden[ncells,:]
 		return self.h0
 
 	def backward(self,input,gradOutput):
