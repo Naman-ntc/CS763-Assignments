@@ -12,13 +12,17 @@ class Model(object):
 		self.D = D
 		self.isTrain = isTrain
 		self.RNN = RNN(D,H)
+		self.fcin = Linear(V,D)
 		self.fc1 = Linear(H,2)
 
-	def forward(self,input):
-		self.out1 = self.RNN.forward(input)
-		self.out2 = self.fc1.forward(out1)
-		return out2
+	def forward(self, input):
+		self.wordVec = self.fcin.forward(input)
+		self.out1 = self.RNN.forward(self.wordVec)
+		self.out2 = self.fc1.forward(self.out1)
+		return self.out2
 
 	def backward(self,input,gradOutput):
 		gradOut1 = self.fc1(self.out1,gradOutput)
-		return self.RNN(input,gradOut1)
+		gradWordVec = self.RNN(self.word_vec,gradOut1)
+		_ = self.fcin(input,gradWordVec)
+		return
