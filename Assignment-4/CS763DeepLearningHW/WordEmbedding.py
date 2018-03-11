@@ -10,7 +10,7 @@ class WordEmbedding(object):
 		self.EmbeddingMatrix = torch.randn(V,D)
 
 	def forward(self, input):
-		return self.EmbeddingMatrix(input.numpy().astype(int))
+		return self.EmbeddingMatrix[(input.numpy()).astype(int),:]
 
 	def backward(self, gradOutput):
-			
+				
