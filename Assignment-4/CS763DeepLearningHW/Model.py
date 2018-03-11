@@ -11,12 +11,12 @@ class Model(object):
 		self.V = V
 		self.D = D
 		self.isTrain = isTrain
+		self.embedding = WordEmbedding(V,D)
 		self.RNN = RNN(D,H)
-		self.fcin = Linear(V,D)
 		self.fc1 = Linear(H,2)
 
 	def forward(self, input):
-		self.wordVec = self.fcin.forward(input)
+		self.wordVec = self.embedding.forward(input)
 		self.out1 = self.RNN.forward(self.wordVec)
 		self.out2 = self.fc1.forward(self.out1)
 		return self.out2
@@ -24,5 +24,5 @@ class Model(object):
 	def backward(self,input,gradOutput):
 		gradOut1 = self.fc1(self.out1,gradOutput)
 		gradWordVec = self.RNN(self.word_vec,gradOut1)
-		_ = self.fcin(input,gradWordVec)
+		_ = self.embedding(input,gradWordVec)
 		return

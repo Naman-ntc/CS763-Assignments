@@ -17,6 +17,8 @@ class Linear():
 		self.momentumBias = torch.zeros(self.bias.size()).type(torch.DoubleTensor)
 		return
 	def forward(self,input):
+		print(input.size())
+		print(self.weight.size())
 		self.output = input.mm(self.weight) + self.bias
 		return self.output
 	def backward(self, input, gradOutput):

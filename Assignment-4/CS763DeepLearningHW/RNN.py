@@ -37,13 +37,17 @@ class RNN(object):
 		gradHidden = torch.zeros(ncells+1,self.hidden_dim)
 		gradHidden[ncells,:] = gradOutput
 		gradInput = torch.zeros(input.shape())
+		tempgradB = torch.zeros(hidden_dim)
+		tempgradW = torch.zeros((input_dim+hidden_dim),hidden_dim)
 		for i in reversed(range(ncells)):
 			temp_input = torch.cat(input[i,:],hidden[i,:])
 			dtemp = (1-torch.square(self.hidden[i+1,:]))*gradHidden[i+1,:]
-			self.gradB += torch.sum(dtemp,dim=0)
-			self.gradW += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
+			tempgradB += torch.sum(dtemp,dim=0)
+			tempgradW += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
 			gradHidden[i,:] = dtemp.mm(self.W[input_dim:,:].t())
 			gradInput[i,:] = dtemp.mm(self.W[:input_dim,:].t())
+		self.gradW += tempgradW/ncells
+		self.gradB += tempgradB/ncells	
 		return gradInput
 	
 	def clear_grad(self):
