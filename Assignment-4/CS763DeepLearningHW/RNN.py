@@ -1,14 +1,15 @@
 import torch
+from math import sqrt 
 
 class RNN(object):
 	"""docstring for RNN"""
-	def __init__(self, input_dim,hidden_dim):
+	def __init__(self, input_dim, hidden_dim):
 		super(RNN, self).__init__()
 		self.input_dim = input_dim
 		self.hidden_dim = hidden_dim
-		self.weight = torch.randn((input_dim+hidden_dim),hidden_dim)
-		self.bias = torch.randn(hidden_dim)
-		self.h0 = torch.zeros(hidden_dim)
+		self.weight = torch.randn((input_dim+hidden_dim),hidden_dim) * sqrt(1.0/(input_dim+hidden_dim))
+		self.bias = torch.randn(hidden_dim) * sqrt(1.0/(input_dim+hidden_dim))
+		self.h0 = torch.randn(hidden_dim)
 		self.gradBias = torch.zeros(hidden_dim)
 		self.gradWeight = torch.zeros((input_dim+hidden_dim),hidden_dim)
 		self.isTrainable = True
@@ -26,8 +27,8 @@ class RNN(object):
 			temp_input = torch.cat((input[i,:],self.hidden[i,:])).view(1,-1)
 			self.hidden[i+1,:] = temp_input.mm(self.weight) + self.bias
 			self.hidden[i+1,:] = torch.tanh(self.hidden[i+1,:])
-		self.h0 = self.hidden[ncells,:]
-		return self.h0
+		#self.h0 = self.hidden[ncells,:]
+		return self.hidden[ncells,:]
 
 	def backward(self,input,gradOutput):
 		"""
@@ -43,7 +44,7 @@ class RNN(object):
 		tempgradWeight = torch.zeros((self.input_dim+self.hidden_dim),self.hidden_dim)
 		for i in reversed(range(ncells)):
 			temp_input = torch.cat((input[i,:],self.hidden[i,:])).view(1,-1)
-			dtemp = (1-(self.hidden[i+1,:]**2))*gradHidden[i+1,:].view(1,-1)
+			dtemp = ((1-(self.hidden[i+1,:]**2))*gradHidden[i+1,:]).view(1,-1)
 			tempgradBias += torch.sum(dtemp,dim=0)
 			tempgradWeight += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
 			gradHidden[i,:] = dtemp.mm(self.weight[self.input_dim:,:].t())
@@ -58,7 +59,7 @@ class RNN(object):
 		return
 
 	def __str__(self):
-		string = "RNN layer weight variable number of cells. Takes input a sequence (-1 , %d ) and outputs the last hidden state (%d)!!"%(input_dim,hidden_dim)
+		string = "RNN layer weight variable number of cells. Takes input a sequence (-1 , %d ) and outputs the last hidden state (%d)!!"%(self.input_dim,self.hidden_dim)
 		return string
 
 	def print_param(self):

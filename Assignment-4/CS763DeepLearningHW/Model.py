@@ -33,3 +33,11 @@ class Model(object):
 		for Layer in self.Layers:
 			if Layer.isTrainable:
 				Layer.clear_grad()		
+
+	def dispGradParam(self):
+		lenn = len(self.Layers)
+		for i in range(lenn-1,-1,-1):
+			print("Layer : %d"%(i))
+			print(self.Layers[i])
+			if (self.Layers[i].isTrainable):
+				self.Layers[i].print_param()

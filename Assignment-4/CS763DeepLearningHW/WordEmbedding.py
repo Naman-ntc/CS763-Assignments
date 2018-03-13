@@ -7,7 +7,7 @@ class WordEmbedding(object):
 		super(WordEmbedding, self).__init__()
 		self.V = V
 		self.D = D
-		self.EmbeddingMatrix = torch.randn(V,D)
+		self.EmbeddingMatrix = torch.randn(V,D)*100
 		self.gradEmbeddingMatric = torch.zeros(V,D)
 		self.isTrainable = False
 
