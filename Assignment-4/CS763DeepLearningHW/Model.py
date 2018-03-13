@@ -15,7 +15,8 @@ class Model(object):
 		self.embedding = WordEmbedding(V,D)
 		self.RNN = RNN(D,H)
 		self.fc1 = Linear(H,2)
-
+		self.Layers = [self.fc1,self.RNN,self.embedding]
+		
 	def forward(self, input):
 		self.wordVec = self.embedding.forward(input)
 		self.out1 = self.RNN.forward(self.wordVec)
@@ -27,3 +28,8 @@ class Model(object):
 		gradWordVec = self.RNN.backward(self.wordVec,gradOut1)
 		#_ = self.embedding(input,gradWordVec)
 		return
+
+	def clearGradParam(self):
+		for Layer in self.Layers:
+			if Layer.isTrainable:
+				Layer.clear_grad()		

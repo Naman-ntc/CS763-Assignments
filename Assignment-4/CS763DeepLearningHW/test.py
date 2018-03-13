@@ -2,12 +2,24 @@ import torch
 from Model import *
 from readData import *
 import numpy as np
+from Criterion import *
 
 torch.set_default_tensor_type('torch.DoubleTensor')
-model = Model(-1,128,268,200,1)
-#print(model.forward(data[0].type(torch.DoubleTensor)))
-#print(model.backward(data[0].type(torch.DoubleTensor),torch.randn(1,2)))
+model = Model(-1,128,333,200,1)
 
-trial_data = learningRate = 1e-1
+lossClass = Criterion()
 
 learningRate = 1e-1
+
+for i in range(10):
+	trial_data = data[i].view(1,-1)
+	yPred = model.forward(trial_data)
+	lossGrad, loss = lossClass.backward(yPred, torch.DoubleTensor([labels[i]]))
+	if i%1 == 0:
+		print(i, loss)
+	model.clearGradParam()
+	model.backward(trial_data, lossGrad)
+	for layer in model.Layers:
+		if layer.isTrainable:
+			layer.weight -= learningRate*layer.gradWeight
+			layer.bias -= learningRate*layer.gradBias
