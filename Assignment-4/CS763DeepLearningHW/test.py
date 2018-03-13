@@ -1,6 +1,6 @@
 import torch
 from Model import *
-from readData import *
+from readData4 import *
 import numpy as np
 from Criterion import *
 
