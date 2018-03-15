@@ -7,12 +7,10 @@ class WordEmbedding(object):
 		super(WordEmbedding, self).__init__()
 		self.V = V
 		self.D = D
-		self.EmbeddingMatrix = torch.randn(V,D)*100
+		self.EmbeddingMatrix = torch.ones(V,D)
 		self.gradEmbeddingMatric = torch.zeros(V,D)
 		self.isTrainable = False
 
 	def forward(self, input):
 		return self.EmbeddingMatrix[(input.numpy()).astype(int),:].view(-1,self.D)
-
-	#def backward(self, input, gradOutput):
-				
+			

@@ -12,13 +12,17 @@ class Model(object):
 		self.V = V
 		self.D = D
 		self.isTrain = isTrain
-		self.embedding = WordEmbedding(V,D)
+		#self.embedding = WordEmbedding(V,D)
 		self.RNN = RNN(D,H)
 		self.fc1 = Linear(H,2)
-		self.Layers = [self.fc1,self.RNN,self.embedding]
+		self.Layers = [self.fc1,self.RNN]
 		
 	def forward(self, input):
-		self.wordVec = self.embedding.forward(input)
+		#self.wordVec = self.embedding.forward(input)
+		input = input.view(-1)
+		n = input.size()[0]
+		self.wordVec = torch.zeros(n,self.D)
+		self.wordVec[np.arange(n),input.numpy()]
 		self.out1 = self.RNN.forward(self.wordVec)
 		self.out2 = self.fc1.forward(self.out1.view(1,-1))
 		return self.out2
