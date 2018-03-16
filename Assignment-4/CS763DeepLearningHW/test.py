@@ -7,16 +7,16 @@ from Criterion import *
 torch.set_printoptions(precision=3)
 
 torch.set_default_tensor_type('torch.DoubleTensor')
-model = Model(-1,128,153,153,1)
+model = Model(-1,153,153,153,1)
 
 lossClass = Criterion()
 
 
-def printAcc(batch_size):
+def printAcc(start,batch_size):
 	print("\nPrinting Accuracy Now~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 	count = 0
 	for i in range(batch_size):
-		trial_data = data[i].view(1,-1)
+		trial_data = data[start+i].view(1,-1)
 		yPred = model.forward(trial_data)
 		count += (int(yPred.view(1,-1).max(dim=1)[1])==int(labels[i]))
 		#print(int(yPred.view(1,-1).max(dim=1)[1]),int(labels[i]),yPred.tolist())
@@ -27,13 +27,13 @@ def printAcc(batch_size):
 
 
 learningRate = 1
-total_train = 1184
+total_train = 1100
+total_test = 84
 
+batch_size = 20
 
-batch_size = 10
-
-printAcc(total_train)
-
+printAcc(0,total_train)
+printAcc(1100,total_test)
 for kkk in range(10):
 	batch_loss = 0
 	permed = torch.randperm(total_train)
@@ -54,14 +54,15 @@ for kkk in range(10):
 				if layer.isTrainable:
 					layer.weight -= learningRate*(layer.gradWeight/batch_size)
 					layer.bias -= learningRate*(layer.gradBias/batch_size)
-			print(total_train*kkk+j//10,batch_loss/batch_size)		
+			print(total_train*kkk+j//batch_size,batch_loss/batch_size)		
 			model.clearGradParam()
 			counter = 0	
 			batch_loss = 0
 	if (kkk==0 or kkk == 1 or kkk==2 or kkk==3):
 		learningRate /= 10
 
-printAcc(total_train)
+printAcc(0,total_train)
+printAcc(1100,total_test)
 
 def submitPred():
 	total_test = 395
