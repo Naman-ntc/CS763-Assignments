@@ -49,8 +49,20 @@ class RNN(object):
 			tempgradWeight += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
 			gradHidden[i,:] = dtemp.mm(self.weight[self.input_dim:,:].t())
 			gradInput[i,:] = dtemp.mm(self.weight[:self.input_dim,:].t())
-		self.gradWeight += tempgradWeight/ncells
-		self.gradBias += tempgradBias/ncells	
+		tempgradWeight /= ncells
+		tempgradBias /= ncells	
+		self.gradWeight += tempgradWeight
+		self.gradBias += tempgradBias	
+		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		print("gradWeight :")
+		print(tempgradWeight.max(),tempgradWeight.min(),tempgradWeight.mean(),tempgradWeight.median())
+		print("weight :")
+		print(self.weight.max(),self.weight.min(),self.weight.mean(),self.weight.median())
+		print("gradBias :")
+		print(tempgradBias.max(),tempgradBias.min(),tempgradBias.mean(),tempgradBias.median())
+		print("bias :")
+		print(self.bias.max(),self.bias.min(),self.bias.mean(),self.bias.median())
+		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 		return gradInput
 	
 	def clear_grad(self):

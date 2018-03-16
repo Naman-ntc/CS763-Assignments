@@ -12,6 +12,7 @@ dictionary_opened = dictionary_file.readlines()
 for i in range(153):
 	dictionary[int(dictionary_opened[i].split()[0])] = i
 	
+# print(dictionary)
 
 data = train_data.readlines()
 labels = train_labels.readlines()
@@ -21,8 +22,7 @@ num_sequences = len(data)
 for i in range(num_sequences):
 	data[i] = torch.DoubleTensor([dictionary[int(x)] for x in data[i].split()])
 	labels[i] = int(labels[i].split()[0])
-
-
+	
 labels = torch.DoubleTensor(labels)
 
 
