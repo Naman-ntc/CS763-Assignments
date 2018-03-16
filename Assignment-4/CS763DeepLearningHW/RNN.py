@@ -36,6 +36,7 @@ class RNN(object):
 		Also takes as input a gradOutput of 1xH dimensions
 		ncells equals number of timesteps we backpropogate
 		"""
+		truncating = 15
 		ncells = input.size()[0]
 		gradHidden = torch.zeros(ncells+1,self.hidden_dim)
 		gradHidden[ncells,:] = gradOutput
@@ -45,24 +46,25 @@ class RNN(object):
 		for i in reversed(range(ncells)):
 			temp_input = torch.cat((input[i,:],self.hidden[i,:])).view(1,-1)
 			dtemp = ((1-(self.hidden[i+1,:]**2))*gradHidden[i+1,:]).view(1,-1)
-			tempgradBias += torch.sum(dtemp,dim=0)
-			tempgradWeight += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
+			if (ncells-i<= truncating):
+				tempgradBias += torch.sum(dtemp,dim=0)
+				tempgradWeight += temp_input.view((self.hidden_dim+self.input_dim),1).mm(dtemp.view(1,self.hidden_dim))
 			gradHidden[i,:] = dtemp.mm(self.weight[self.input_dim:,:].t())
 			gradInput[i,:] = dtemp.mm(self.weight[:self.input_dim,:].t())
-		tempgradWeight /= ncells
-		tempgradBias /= ncells	
+		tempgradWeight /= truncating
+		tempgradBias /= truncating	
 		self.gradWeight += tempgradWeight
 		self.gradBias += tempgradBias	
-		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-		print("gradWeight :")
-		print(tempgradWeight.max(),tempgradWeight.min(),tempgradWeight.mean(),tempgradWeight.median())
-		print("weight :")
-		print(self.weight.max(),self.weight.min(),self.weight.mean(),self.weight.median())
-		print("gradBias :")
-		print(tempgradBias.max(),tempgradBias.min(),tempgradBias.mean(),tempgradBias.median())
-		print("bias :")
-		print(self.bias.max(),self.bias.min(),self.bias.mean(),self.bias.median())
-		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		# print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+		# print("gradWeight :")
+		# print(tempgradWeight.max(),tempgradWeight.min(),tempgradWeight.mean(),tempgradWeight.median())
+		# print("weight :")
+		# print(self.weight.max(),self.weight.min(),self.weight.mean(),self.weight.median())
+		# print("gradBias :")
+		# print(tempgradBias.max(),tempgradBias.min(),tempgradBias.mean(),tempgradBias.median())
+		# print("bias :")
+		# print(self.bias.max(),self.bias.min(),self.bias.mean(),self.bias.median())
+		# print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 		return gradInput
 	
 	def clear_grad(self):
