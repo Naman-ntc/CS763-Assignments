@@ -29,3 +29,11 @@ labels = torch.DoubleTensor(labels)
 train_data.close()
 train_labels.close()
 
+test_data = open("../Small-Data/test_data.txt","r")
+test = test_data.readlines()
+
+num_sequences = len(test)
+for i in range(num_sequences):
+	test[i] = torch.DoubleTensor([dictionary[int(x)] for x in test[i].split()])
+
+test_data.close()	

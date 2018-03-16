@@ -27,13 +27,19 @@ def printAcc(batch_size):
 
 
 learningRate = 1
-batch_size = 50
-printAcc(batch_size)
+total_train = 1184
 
-for kkk in range(100):
+
+batch_size = 10
+
+printAcc(total_train)
+
+for kkk in range(10):
 	batch_loss = 0
-	for j in range(batch_size):
-		i = j
+	permed = torch.randperm(total_train)
+	counter = 0
+	for j in range(total_train):
+		i = permed[j]
 		trial_data = data[i].view(1,-1)
 		yPred = model.forward(trial_data)
 		#print(yPred.tolist())
@@ -42,13 +48,24 @@ for kkk in range(100):
 		batch_loss += (loss)
 		model.backward(trial_data, lossGrad)
 		# print(yPred.tolist())
-		
-	for layer in model.Layers:
-		if layer.isTrainable:
-			layer.weight -= learningRate*(layer.gradWeight/batch_size)
-			layer.bias -= learningRate*(layer.gradBias/batch_size)
-	print(kkk,batch_loss/batch_size)		
-	model.clearGradParam()	
+		counter+=1
+		if counter==batch_size :
+			for layer in model.Layers:
+				if layer.isTrainable:
+					layer.weight -= learningRate*(layer.gradWeight/batch_size)
+					layer.bias -= learningRate*(layer.gradBias/batch_size)
+			print(total_train*kkk+j//10,batch_loss/batch_size)		
+			model.clearGradParam()
+			counter = 0	
+			batch_loss = 0
+	if (kkk==0 or kkk == 1 or kkk==2 or kkk==3):
+		learningRate /= 10
 
-		
-printAcc(batch_size)
+printAcc(total_train)
+
+def submitPred():
+	total_test = 395
+	for i in range(total_test):
+		test_data = test[i].view(1,-1)
+		yPred = model.forward(test_data)
+		#(int(yPred.view(1,-1).max(dim=1)[1])

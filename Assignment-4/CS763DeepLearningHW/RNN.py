@@ -36,7 +36,7 @@ class RNN(object):
 		Also takes as input a gradOutput of 1xH dimensions
 		ncells equals number of timesteps we backpropogate
 		"""
-		truncating = 15
+		truncating = 20
 		ncells = input.size()[0]
 		gradHidden = torch.zeros(ncells+1,self.hidden_dim)
 		gradHidden[ncells,:] = gradOutput
