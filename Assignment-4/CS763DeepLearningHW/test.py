@@ -46,7 +46,7 @@ batch_size = 12
 
 
 def train(epoches,lr):
-	for kkk in range(int(epoches//1)):
+	for kkk in range(int(epoches)):
 		batch_loss = 0
 		permed = torch.randperm(total_train)
 		counter = 0
