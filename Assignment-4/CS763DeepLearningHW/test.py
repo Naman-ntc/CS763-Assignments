@@ -8,7 +8,7 @@ import sys
 torch.set_printoptions(precision=3)
 
 torch.set_default_tensor_type('torch.DoubleTensor')
-model = Model(-1,153,153,153,1)
+model = Model(-1,256,153,153,1)
 
 lossClass = Criterion()
 
@@ -39,8 +39,8 @@ def submitPred(str):
 
 
 learningRate = 1
-total_train = 1100
-total_test = 84
+total_train = 1170
+total_test = 14
 
 batch_size = 12
 
@@ -95,8 +95,40 @@ def train(epoches,lr):
 	# 		batch_loss = 0			
 
 printAcc(0,total_train)
-printAcc(1100,total_test)
+printAcc(1170,total_test)
 
+
+train(10,1)
+train(3,1e-1)
+printAcc(0,total_train)
+printAcc(1170,total_test)
+submitPred("output1.dat")		
+train(3,1e-2)
+train(3,1e-3)
+printAcc(0,total_train)
+printAcc(1170,total_test)
+submitPred("output2.dat")		
+train(3,1e-3)
+printAcc(0,total_train)
+printAcc(1170,total_test)
+submitPred("output3.dat")		
+
+"""
+86.29
+train(10,1)
+train(3,1e-1)
+printAcc(0,total_train)
+printAcc(1100,total_test)
+submitPred("output1.dat")		
+train(3,1e-2)
+train(5,1e-3)
+printAcc(0,total_train)
+printAcc(1100,total_test)
+submitPred("output2.dat")		
+"""
+
+"""
+85.78
 train(10,1)
 train(1,1e-1)
 printAcc(0,total_train)
@@ -108,3 +140,4 @@ printAcc(0,total_train)
 printAcc(1100,total_test)
 submitPred("output2.dat")		
 
+"""

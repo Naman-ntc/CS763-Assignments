@@ -15,8 +15,8 @@ class Model(object):
 		#self.embedding = WordEmbedding(V,D)
 		self.RNN = RNN(D,H)
 		self.fc1 = Linear(H,2)
-		self.fc2 = Linear(V,D)
-		self.Layers = [self.fc1,self.RNN,self.fc2]
+		# self.fc2 = Linear(V,D)
+		self.Layers = [self.fc1,self.RNN]
 		
 	def forward(self, input):
 		#self.wordVec = self.embedding.forward(input)
@@ -24,7 +24,7 @@ class Model(object):
 		n = input.size()[0]
 		self.wordVec = torch.zeros(n,self.D)
 		self.wordVec[np.arange(n),input.numpy()] = 1
-		self.wordVeced = self.fc2.forward(self.wordVec)
+		# self.wordVeced = self.fc2.forward(self.wordVec)
 		# print(self.wordVeced.max(),self.wordVeced.min(),self.wordVeced.mean(),self.wordVeced.median())
 		self.out1 = self.RNN.forward(self.wordVec)
 		self.out2 = self.fc1.forward(self.out1.view(1,-1))
@@ -33,7 +33,7 @@ class Model(object):
 	def backward(self,input,gradOutput):
 		gradOut1 = self.fc1.backward(self.out1.view(1,-1),gradOutput.view(1,-1))
 		gradWordVeced = self.RNN.backward(self.wordVec,gradOut1)
-		_ = self.fc2.backward(self.wordVeced,gradWordVeced)
+		# _ = self.fc2.backward(self.wordVeced,gradWordVeced)
 		return
 
 	def clearGradParam(self):
