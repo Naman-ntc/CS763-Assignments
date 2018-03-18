@@ -8,7 +8,7 @@ import sys
 torch.set_printoptions(precision=3)
 
 torch.set_default_tensor_type('torch.DoubleTensor')
-model = Model(-1,256,153,153,1)
+model = Model(-1,128,153,153,1)
 
 lossClass = Criterion()
 
@@ -70,48 +70,27 @@ def train(epoches,lr):
 				model.clearGradParam()
 				counter = 0	
 				batch_loss = 0
-	# batch_loss = 0
-	# permed = torch.randperm(total_train)
-	# counter = 0
-	# for j in range(int(total_train * (epoches%1))):
-	# 	i = permed[j]
-	# 	trial_data = data[i].view(1,-1)
-	# 	yPred = model.forward(trial_data)
-	# 	#print(yPred.tolist())
-	# 	lossGrad, loss = lossClass.backward(yPred, torch.DoubleTensor([labels[i]]))
-	# 	#print(lossGrad.tolist())
-	# 	batch_loss += (loss)
-	# 	model.backward(trial_data, lossGrad)
-	# 	# print(yPred.tolist())
-	# 	counter+=1
-	# 	if counter==batch_size :
-	# 		for layer in model.Layers:
-	# 			if layer.isTrainable:
-	# 				layer.weight -= learningRate*(layer.gradWeight/batch_size)
-	# 				layer.bias -= learningRate*(layer.gradBias/batch_size)
-	# 		print(int((total_train*(epoches//1)+j)//batch_size),batch_loss/batch_size)		
-	# 		model.clearGradParam()
-	# 		counter = 0	
-	# 		batch_loss = 0			
+			
 
-printAcc(0,total_train)
-printAcc(1170,total_test)
+def pacc():
+	printAcc(0,total_train)
+	printAcc(1170,total_test)
 
 
-train(10,1)
-train(3,1e-1)
-printAcc(0,total_train)
-printAcc(1170,total_test)
-submitPred("output1.dat")		
-train(3,1e-2)
-train(3,1e-3)
-printAcc(0,total_train)
-printAcc(1170,total_test)
-submitPred("output2.dat")		
-train(3,1e-3)
-printAcc(0,total_train)
-printAcc(1170,total_test)
-submitPred("output3.dat")		
+# train(10,1)
+# train(3,1e-1)
+# printAcc(0,total_train)
+# printAcc(1170,total_test)
+# submitPred("output1.dat")		
+# train(3,1e-2)
+# train(3,1e-3)
+# printAcc(0,total_train)
+# printAcc(1170,total_test)
+# submitPred("output2.dat")		
+# train(3,1e-3)
+# printAcc(0,total_train)
+# printAcc(1170,total_test)
+# submitPred("output3.dat")		
 
 """
 86.29
