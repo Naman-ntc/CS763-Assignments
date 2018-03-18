@@ -7,21 +7,15 @@ import os
 
 def getTarget (pathToInput):
 	dictionary_file = open("../Small-Data/for_dict.txt")
-
 	dictionary = {}
-
 	dictionary_opened = dictionary_file.readlines()
-
 	for i in range(153):
 		dictionary[int(dictionary_opened[i].split()[0])] = i
-
 	test_data = open(pathToInput,"r")
 	test = test_data.readlines()
-
 	num_sequences = len(test)
 	for i in range(num_sequences):
 		test[i] = torch.DoubleTensor([dictionary[int(x)] for x in test[i].split()])
-
 	test_data.close()		
 	return test
 

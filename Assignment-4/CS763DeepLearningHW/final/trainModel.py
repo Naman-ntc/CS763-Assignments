@@ -11,13 +11,13 @@ learningRate = 1
 
 torch.set_default_tensor_type('torch.DoubleTensor')
 
-def printAcc(start,batch_size):
+def printAcc(start,batchSize):
 	count = 0
-	for i in range(batch_size):
+	for i in range(batchSize):
 		trial_data = data[start+i].view(1,-1)
 		yPred = model.forward(trial_data)
 		count += (int(yPred.view(1,-1).max(dim=1)[1])==int(labels[start+i]))
-	print(count/batch_size)
+	print(count/batchSize)
 
 def saveModel(fileToSave):
 	global model
@@ -55,30 +55,28 @@ def getData(pathToData, pathToLabels):
 		
 def train(epoches,lr):
 	global model
+	totalTrain = len(data)
 	for kkk in range(int(epoches)):
-		batch_loss = 0
-		permed = torch.randperm(total_train)
+		batchLoss = 0
+		permed = torch.randperm(totalTrain)
 		counter = 0
-		for j in range(int(total_train)):
+		for j in range(totalTrain):
 			i = permed[j]
 			trial_data = data[i].view(1,-1)
 			yPred = model.forward(trial_data)
-			#print(yPred.tolist())
 			lossGrad, loss = lossClass.backward(yPred, torch.DoubleTensor([labels[i]]))
-			#print(lossGrad.tolist())
-			batch_loss += (loss)
+			batchLoss += (loss)
 			model.backward(trial_data, lossGrad)
-			# print(yPred.tolist())
 			counter+=1
-			if counter==batch_size :
+			if counter==batchSize :
 				for layer in model.Layers:
 					if layer.isTrainable:
-						layer.weight -= learningRate*(layer.gradWeight/batch_size)
-						layer.bias -= learningRate*(layer.gradBias/batch_size)
-				print((total_train*kkk+j)//batch_size,batch_loss/batch_size)		
+						layer.weight -= learningRate*(layer.gradWeight/batchSize)
+						layer.bias -= learningRate*(layer.gradBias/batchSize)
 				model.clearGradParam()
 				counter = 0	
-				batch_loss = 0	
+				batchLoss = 0	
+				print((totalTrain*kkk+j)//batchSize,batchLoss/batchSize)		
 
 
 def makeBestModel():
@@ -89,11 +87,11 @@ def makeBestModel():
 def trainModel():
 	train(10,1)
 	train(3,1e-1)
-	printAcc(0,total_train)
+	printAcc(0,totalTrain)
 	printAcc(1100,total_test)
 	train(3,1e-2)
 	train(5,1e-3)
-	printAcc(0,total_train)
+	printAcc(0,totalTrain)
 	printAcc(1100,total_test)
 
 
