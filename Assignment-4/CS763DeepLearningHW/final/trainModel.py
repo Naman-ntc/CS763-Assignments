@@ -85,12 +85,15 @@ def makeBestModel():
 
 
 def trainModel():
-	train(10,1)
+	8 0 3 -1 6 -2 10 -6
+	train(8,1)
 	train(3,1e-1)
 	printAcc(0,totalTrain)
 	printAcc(1100,total_test)
-	train(3,1e-2)
-	train(5,1e-3)
+	train(6,1e-2)
+	printAcc(0,totalTrain)
+	printAcc(1100,total_test)
+	train(10,1e-6)
 	printAcc(0,totalTrain)
 	printAcc(1100,total_test)
 
