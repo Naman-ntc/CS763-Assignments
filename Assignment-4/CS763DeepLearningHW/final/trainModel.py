@@ -91,7 +91,7 @@ def trainModel():
 	printAcc(0,totalTrain)
 	train(6,1e-2)
 	printAcc(0,totalTrain)
-	train(5,1e-6)
+	train(8,1e-6)
 	printAcc(0,totalTrain)
 
 
