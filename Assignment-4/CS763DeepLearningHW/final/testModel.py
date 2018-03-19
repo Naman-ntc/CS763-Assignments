@@ -5,8 +5,11 @@ from imports import *
 import numpy as np
 import os
 
+torch.set_default_tensor_type('torch.DoubleTensor')
+
+
 def getTarget (pathToInput):
-	dictionary_file = open("../Small-Data/for_dict.txt")
+	dictionary_file = open("src/for_dict.txt","r")
 	dictionary = {}
 	dictionary_opened = dictionary_file.readlines()
 	for i in range(153):
@@ -29,10 +32,15 @@ def getModel(pathToModel):
 def getPredictions(model,testData):
 	totalTest = len(testData)
 	predictions = torch.zeros(totalTest)
+	temp_stdout = sys.stdout
+	sys.stdout = open("testPredications.txt", "w")
+	print("id,label\n")
 	for i in range(totalTest):
 		test_data = testData[i].view(1,-1)
 		yPred = model.forward(test_data)
 		predictions[i] = int(yPred.view(1,-1).max(dim=1)[1])
+		print("%d,%d"%(i,int(yPred.view(1,-1).max(dim=1)[1])))
+	sys.stdout = temp_stdout
 	return predictions	
 
 argumentList = sys.argv[1:]
@@ -49,5 +57,5 @@ testData = getTarget(arguments["-data"])
 yPred = getPredictions(model,testData)
 
 file = open("testPredications.bin", 'wb')
-torch.save(ypred, file)
+torch.save(yPred, file)
 file.close()

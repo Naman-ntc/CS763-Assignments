@@ -30,7 +30,7 @@ def getData(pathToData, pathToLabels):
 	global data, labels
 	train_data = open(pathToData,"r")
 	train_labels = open(pathToLabels,"r")
-	dictionary_file = open("for_dict.txt","r")
+	dictionary_file = open("src/for_dict.txt","r")
 
 	dictionary = {}
 
@@ -54,7 +54,7 @@ def getData(pathToData, pathToLabels):
 	
 		
 def train(epoches,lr):
-	global model
+	global model,totalTrain
 	totalTrain = len(data)
 	for kkk in range(int(epoches)):
 		batchLoss = 0
@@ -75,27 +75,24 @@ def train(epoches,lr):
 						layer.bias -= learningRate*(layer.gradBias/batchSize)
 				model.clearGradParam()
 				counter = 0	
-				batchLoss = 0	
 				print((totalTrain*kkk+j)//batchSize,batchLoss/batchSize)		
+				batchLoss = 0	
 
 
 def makeBestModel():
-	model = Model(-1,256,153,153,1)
+	model = Model(-1,128,153,153,1)
 	return model
 
 
 def trainModel():
-	8 0 3 -1 6 -2 10 -6
+	# 8 0 3 -1 6 -2 10 -6
 	train(8,1)
 	train(3,1e-1)
 	printAcc(0,totalTrain)
-	printAcc(1100,total_test)
 	train(6,1e-2)
 	printAcc(0,totalTrain)
-	printAcc(1100,total_test)
-	train(10,1e-6)
+	train(5,1e-6)
 	printAcc(0,totalTrain)
-	printAcc(1100,total_test)
 
 
 def saveModel(fileToSave):
@@ -110,7 +107,7 @@ arguments = {}
 for i in range(int(len(argumentList)/2)):
 	arguments[argumentList[2*i]] = argumentList[2*i + 1]
 model = makeBestModel()
-
+getData(arguments["-data"], arguments["-target"])
 trainModel()
 
 command = "mkdir " + arguments["-modelName"]
