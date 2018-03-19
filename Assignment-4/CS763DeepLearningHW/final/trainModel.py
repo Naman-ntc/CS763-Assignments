@@ -10,6 +10,7 @@ lossClass = Criterion()
 learningRate = 1
 
 torch.set_default_tensor_type('torch.DoubleTensor')
+torch.manual_seed(5)
 
 def printAcc(start,batchSize):
 	count = 0
