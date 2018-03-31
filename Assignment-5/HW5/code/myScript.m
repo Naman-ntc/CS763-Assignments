@@ -2,17 +2,65 @@ clear;
 close all;
 clc;
 
-%% Your Code Here
-%
-%
-%
-%
-%
-%
-%
-%
+Nimages = 247;
+noOfFeatures = 20;
+trackedPoints = zeros(Nimages,2,noOfFeatures);
+lastParameters = zeros(noOfFeatures,6);
+lastPoints = zeros(2,noOfFeatures);
 
+filterX = [[-1,0,1]; [-2,0,2]; [-1,0,1]]/8;
+filterY = transpose(filterX);
 
+reSurf = 20;
+
+for i = 1:Nimages
+    if rem(i,reSurf)==1
+        % Storing templates
+        image0 = imread(strcat('../input/',num2str(i),'.jpg'));
+        templatePoints = surf_points(image0,noOfFeatures);
+        trackedPoints(i,:,:) = reshape(transpose(templatePoints),[1,2,noOfFeatures]);
+        templates = zeros(noOfFeatures,41,41);
+
+        for ii = 1:noOfFeatures
+            templates(ii,:,:) = image0(templatePoints(ii,2)-20:templatePoints(ii,2)+20,templatePoints(ii,1)-20:templatePoints(ii,1)+20); %CHECK
+            lastParameters(ii,:) = [1,0,0,0,1,0];
+            lastPoints = trackedPoints(i,:,:);
+            lastPoints = reshape(lastPoints,[2,noOfFeatures]);
+        end
+    else
+        image = imread(strcat('../input/',num2str(i),'.jpg'));
+        imgradX = imfilter(image,filterX);
+        imgradY = imfilter(image,filterY);
+        
+        for j = 1:noOfFeatures
+            for kkkk = 1:3
+                deltaP = zeros(1,6);
+                currStrucTen = findstructen(image,fliplr(trackedPoints(i-1,:,j)),imgradX,imgradY);
+                for a1 = 1:41
+                    for a2 = 1:41
+                        % CHECK in case of mistake
+                        currX = round(lastPoints(1,j));
+                        currY = round(lastPoints(2,j));
+                        currI = interp2(image,currX,currY);
+                        current = double([imgradX(currX,currY),imgradY(currX,currY)]) * [[i,j,1,0,0,0]; [0,0,0,i,j,1]];
+                        temp = double(templates(j,a1,a2) - currI) * current;
+                        deltaP = temp + deltaP;
+                    end
+                end
+                origX = (trackedPoints(i-rem(i,reSurf)+1,1,j)-a1-21);
+                origY = (trackedPoints(i-rem(i,reSurf)+1,2,j)-a2-21);
+                lastParameters(j,:) = lastParameters(j,:) + deltaP / currStrucTen;
+                lastPoints(:,j)  =  lastPoints(:,j) + transpose(reshape(deltaP,[3,2])) * [origX;origY;1];
+            end
+            j
+        end
+        trackedPoints(i,:,:) = lastPoints;
+        
+    end
+    i
+end
+
+%{
 %% Save all the trajectories frame by frame
 % variable trackedPoints assumes that you have an array of size 
 % No of frames * 2(x, y) * No Of Features
@@ -31,3 +79,4 @@ for i=1:N
     noOfPoints = noOfPoints + 1;
 end 
    
+%}
