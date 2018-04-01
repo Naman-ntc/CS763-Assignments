@@ -2,7 +2,7 @@ clear;
 close all;
 clc;
 
-Nimages = 59;
+Nimages = 10;
 noOfFeatures = 3;
 trackedPoints = zeros(Nimages,2,noOfFeatures);
 lastParameters = zeros(noOfFeatures,6);
@@ -11,7 +11,7 @@ lastPoints = zeros(2,noOfFeatures);
 filterX = [[-1,0,1]; [-2,0,2]; [-1,0,1]]/8;
 filterY = transpose(filterX);
 
-reSurf = 15;
+reSurf = 20;
 
 for i = 1:Nimages
     if rem(i,reSurf)==1
@@ -50,8 +50,8 @@ for i = 1:Nimages
                     end
                     % deltaP
                 end
-                origX = (trackedPoints(i-rem(i-1,reSurf),1,j));
-                origY = (trackedPoints(i-rem(i-1,reSurf),2,j));
+                origX = (trackedPoints(i-rem(i,reSurf)+1,1,j));
+                origY = (trackedPoints(i-rem(i,reSurf)+1,2,j));
                 alpha = deltaP;
                 beta = eye(6)/currStrucTen;
                 deltaP = deltaP / currStrucTen;
@@ -60,29 +60,30 @@ for i = 1:Nimages
                 lastPoints(:,j)  =  lastPoints(:,j) + affine * [origX;origY;1];
                 lastPoints(:,j);
             end
+            j
         end
         trackedPoints(i,:,:) = lastPoints;
     end
-    
+    i
 end
 
-
-%%% Save all the trajectories frame by frame
+%{
+%% Save all the trajectories frame by frame
 % variable trackedPoints assumes that you have an array of size 
 % No of frames * 2(x, y) * No Of Features
 % noOfFeatures is the number of features you are tracking
 % Frames is array of all the frames(assumes grayscale)
 noOfPoints = 1;
 for i=1:Nimages
-    NextFrame = imread(strcat('../input/',num2str(i),'.jpg'));
+    NextFrame = imread(strcat('../input/',num2str(i),'.jpg'))
     imshow(uint8(NextFrame)); hold on;
     for nF = 1:noOfFeatures
         plot(trackedPoints(1:noOfPoints, 1, nF), trackedPoints(1:noOfPoints, 2, nF),'*')
     end
     hold off;
-    saveas(gcf,strcat('../output/',num2str(i),'.jpg'));
+    saveas(gcf,strcat('output/',num2str(i),'.jpg'));
     close all;
     noOfPoints = noOfPoints + 1;
 end 
    
-
+%}

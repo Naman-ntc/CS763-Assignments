@@ -18,7 +18,7 @@ for i = 1:countPoints
     if (points(i,1) <21 || points(i,2) <21 || points(i,1) > 619 || points(i,2) > 459)
         eigenvalues(i) = -1;
     else
-        temp = eig(findstructen(image,points(i,:),imgradX,imgradY));
+        temp = eig(find2dstructen(image,points(i,:),imgradX,imgradY));
         eigenvalues(i) = temp(1);
     end
 end
