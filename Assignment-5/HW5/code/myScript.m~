@@ -2,8 +2,8 @@ clear;
 close all;
 clc;
 
-Nimages = 30;
-noOfFeatures = 2;
+Nimages = 2;
+noOfFeatures = 10;
 trackedPoints = zeros(Nimages,2,noOfFeatures);
 lastParameters = zeros(noOfFeatures,6);
 lastPoints = zeros(2,noOfFeatures);
@@ -41,19 +41,19 @@ for i = 1:Nimages
                         % transpose(double([imgradX(currX,currY),imgradY(currX,currY)])) 
                         % [[currX,currY,1,0,0,0]; [0,0,0,currX,currY,1]]
                         current = double([imgradX(rownum,colnum),imgradY(rownum,colnum)]) * [[colnum,rownum,1,0,0,0]; [0,0,0,colnum,rownum,1]];
-                        temp = double(templates(j,a1,a2) - currI) * current;
+                        temp = double(templates(j,a1,a2) - currI) * current
                         deltaP = temp + deltaP;
                     end
                     % deltaP
                 end
-                origrow = (trackedPoints(i-rem(i-1,reSurf),1,j));
-                origcol = (trackedPoints(i-rem(i-1,reSurf),2,j));
+                origX = (trackedPoints(i-rem(i-1,reSurf),1,j));
+                origY = (trackedPoints(i-rem(i-1,reSurf),2,j));
                 alpha = deltaP;
                 beta = eye(6)/currStrucTen;
                 deltaP = deltaP / currStrucTen;
-                lastParameters(j,:) = lastParameters(j,:) + deltaP;
-                affine = transpose(reshape(deltaP,[3,2]));
-                lastPoints(:,j)  =  lastPoints(:,j) + affine * [origrow;origcol;1];
+                lastParameters(j,:) = lastParameters(j,:) + (deltaP);
+                affine = transpose(reshape(deltaP,[3,2]))
+                lastPoints(:,j)  =  lastPoints(:,j) + affine * [origX;origY;1];
                 lastPoints(:,j);
             end
         end
