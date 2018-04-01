@@ -39,8 +39,8 @@ for i = 1:Nimages
                 for a1 = 1:41
                     for a2 = 1:41
                         % CHECK in case of mistake
-                        currX = round(lastPoints(1,j));
-                        currY = round(lastPoints(2,j));
+                        currX = round(lastPoints(1,j))+a1-21;
+                        currY = round(lastPoints(2,j))+a2-21;
                         currI = interp2(image,currX,currY);
                         % transpose(double([imgradX(currX,currY),imgradY(currX,currY)])) 
                         % [[currX,currY,1,0,0,0]; [0,0,0,currX,currY,1]]
@@ -48,17 +48,17 @@ for i = 1:Nimages
                         temp = double(templates(j,a1,a2) - currI) * current;
                         deltaP = temp + deltaP;
                     end
+                    % deltaP
                 end
-                ['CHECK', num2str(kkkk)]
                 origX = (trackedPoints(i-rem(i,reSurf)+1,1,j));
                 origY = (trackedPoints(i-rem(i,reSurf)+1,2,j));
                 alpha = deltaP
-                beta = currStrucTen
+                beta = eye(6)/currStrucTen
                 deltaP = deltaP / currStrucTen
                 lastParameters(j,:) = lastParameters(j,:) + (deltaP);
-                affine = transpose(reshape(deltaP,[3,2]));
+                affine = transpose(reshape(deltaP,[3,2]))
                 lastPoints(:,j)  =  lastPoints(:,j) + affine * [origX;origY;1];
-                
+                lastPoints(:,j)
             end
         end
         trackedPoints(i,:,:) = lastPoints;
