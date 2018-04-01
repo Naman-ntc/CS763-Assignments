@@ -8,13 +8,15 @@ points = fliplr(round(points.Location));
 % filterX = [[-1,0,1]; [-2,0,2]; [-1,0,1]]/8;
 % filterY = transpose(filterX);
 
+bbox = 81;
+
 [imgradX,imgradY] = imgradientxy(image);
 
 countPoints = size(points);
 eigenvalues = zeros(countPoints);
 
 for i = 1:countPoints
-    if (points(i,2) <21 || points(i,1) <21 || points(i,2) > 480 || points(i,1) > 450)
+    if (points(i,2) <bbox/2 || points(i,1) <bbox/2 || points(i,2) > 480 || points(i,1) > 430)
         eigenvalues(i) = -1;
     else
         temp = eig(find2dstructen(image,points(i,:),imgradX,imgradY));

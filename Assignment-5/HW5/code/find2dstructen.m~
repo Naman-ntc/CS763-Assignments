@@ -4,7 +4,7 @@ function [ output ] = find2dstructen( image,point,Xgrads,Ygrads)
 
 output = zeros(2,2);
 
-bbox = 81;
+bbox = 61;
 mp = floor(bbox/2);
 
 for i = point(1)-mp:point(1)+mp

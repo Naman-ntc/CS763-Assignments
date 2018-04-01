@@ -2,13 +2,15 @@ clear;
 close all;
 clc;
 
-Nimages = 30;
+Nimages = 35;
 noOfFeatures = 2;
 trackedPoints = zeros(Nimages,2,noOfFeatures);
 lastParameters = zeros(noOfFeatures,6);
 lastPoints = zeros(2,noOfFeatures);
 
-reSurf = 15;
+bbox = 81;
+
+reSurf = 10;
 
 for i = 1:Nimages
     if rem(i,reSurf)==1
@@ -16,10 +18,10 @@ for i = 1:Nimages
         image0 = imread(strcat('../input/',num2str(i),'.jpg'));
         templatePoints = surf_points(image0,noOfFeatures); % Second is bigger
         trackedPoints(i,:,:) = transpose(templatePoints);
-        templates = zeros(noOfFeatures,41,41);
+        templates = zeros(noOfFeatures,bbox,bbox);
 
         for ii = 1:noOfFeatures
-            templates(ii,:,:) = image0(templatePoints(ii,1)-20:templatePoints(ii,1)+20,templatePoints(ii,2)-20:templatePoints(ii,2)+20); %CHECK
+            templates(ii,:,:) = image0(templatePoints(ii,1)-floor(bbox/2):templatePoints(ii,1)+floor(bbox/2),templatePoints(ii,2)-floor(bbox/2):templatePoints(ii,2)+floor(bbox/2)); %CHECK
             lastParameters(ii,:) = [1,0,0,0,1,0];
             lastPoints = trackedPoints(i,:,:);
             lastPoints = reshape(lastPoints,[2,noOfFeatures]);
@@ -32,11 +34,11 @@ for i = 1:Nimages
             for kkkk = 1:3
                 deltaP = zeros(1,6);
                 currStrucTen = findstructen(image,round(lastPoints(:,j)),imgradX,imgradY);
-                for a1 = 1:41
-                    for a2 = 1:41
+                for a1 = 1:bbox
+                    for a2 = 1:bbox
                         % CHECK in case of mistake
-                        rownum = round(lastPoints(1,j))+a1-20;  
-                        colnum = round(lastPoints(2,j))+a2-20;
+                        rownum = round(lastPoints(1,j))+a1-floor(bbox/2);  
+                        colnum = round(lastPoints(2,j))+a2-floor(bbox/2);
                         currI = interp2(image,rownum,colnum);
                         % transpose(double([imgradX(currX,currY),imgradY(currX,currY)])) 
                         % [[currX,currY,1,0,0,0]; [0,0,0,currX,currY,1]]
@@ -53,13 +55,13 @@ for i = 1:Nimages
                 deltaP = deltaP / currStrucTen;
                 lastParameters(j,:) = lastParameters(j,:) + deltaP;
                 affine = transpose(reshape(deltaP,[3,2]));
-                lastPoints(:,j)  =  lastPoints(:,j) + affine * [origrow;origcol;1];
-                lastPoints(:,j);
+                lastPoints(:,j)  =  lastPoints(:,j) + affine * [origcol;origrow;1];
+                affine
             end
         end
         trackedPoints(i,:,:) = lastPoints;
     end
-    i
+%     i
 end
 
 
