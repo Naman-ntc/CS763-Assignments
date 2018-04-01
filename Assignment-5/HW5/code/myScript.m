@@ -11,7 +11,7 @@ lastPoints = zeros(2,noOfFeatures);
 filterX = [[-1,0,1]; [-2,0,2]; [-1,0,1]]/8;
 filterY = transpose(filterX);
 
-reSurf = 15;
+reSurf = 100;
 
 for i = 1:Nimages
     if rem(i,reSurf)==1
@@ -80,7 +80,7 @@ for i=1:Nimages
         plot(trackedPoints(1:noOfPoints, 1, nF), trackedPoints(1:noOfPoints, 2, nF),'*')
     end
     hold off;
-    saveas(gcf,strcat('../output/',num2str(i),'.jpg'));
+    saveas(gcf,strcat('../output2/',num2str(i),'.jpg'));
     close all;
     noOfPoints = noOfPoints + 1;
 end 
