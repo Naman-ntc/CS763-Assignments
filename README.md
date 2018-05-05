@@ -7,7 +7,7 @@ Assignments for the CS763 : Computer Vision Course at IIT Bombay
 * [Q1 : DLT for Camera Parameter Estimation](./Assignment-1/HW1_CameraGeometry/Q1)
 * [Q2 : Barrel Distortion Removal](./Assignment-1/HW1_CameraGeometry/Q2)
 * [Q6 : Image Forensics](./Assignment-1/HW1_CameraGeometry/Q6)
-* [Final Report](./Assignment-1/HW1_CameraGeometry/Report/assignment-1.pdf)
+* [Final Report](./Assignment-1/HW1_CameraGeometry/Report/Report.pdf)
 
 ## Assignment-2 : Image Alignment
 * [Problem-Statement](./Assignment-2/HW2_Alignment/HW2.pdf)
