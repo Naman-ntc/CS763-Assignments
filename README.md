@@ -31,4 +31,4 @@ Assignments for the CS763 : Computer Vision Course at IIT Bombay
 
 ## Assignment-6 : Stero Matching
 * [Problem-Statement](./Assignment-6/HW6_Stereo/HW6.pdf)
-* [Final Implementation](./Assignment-6/HW6_Stereo)
+* [Final Report](./Assignment-6/HW6_Stereo)
