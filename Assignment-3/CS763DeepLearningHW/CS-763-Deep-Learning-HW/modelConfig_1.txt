@@ -1,0 +1,4 @@
+1
+linear 192 10
+/Users/sahil/Desktop/sem4/computerVision/CS763-Assignments/Assignment-3/CS763DeepLearningHW/CS-763-Deep-Learning-HW/W_sample_1.bin
+/Users/sahil/Desktop/sem4/computerVision/CS763-Assignments/Assignment-3/CS763DeepLearningHW/CS-763-Deep-Learning-HW/B_sample_1.bin
