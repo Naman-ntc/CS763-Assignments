@@ -26,9 +26,9 @@ Assignments for the CS763 : Computer Vision Course at IIT Bombay
 * [Final Implementation](./Assignment-4/CS763DeepLearningHW/final)
 
 ## Assignment-5 : KLT Tracker
-* [Problem-Statement](./Assignment-6/HW5_Tracking/HW5.pdf)
+* [Problem-Statement](./Assignment-5/HW5_Tracking/HW5.pdf)
 * [Final Implementation](./Assignment-5/HW5_Tracking)
 
 ## Assignment-6 : Stero Matching
-* [Problem-Statement](./Assignment-6/HW5_Stereo/HW6.pdf)
-* [Final Implementation](./Assignment-6/HW5_Stereo)
+* [Problem-Statement](./Assignment-6/HW6_Stereo/HW6.pdf)
+* [Final Implementation](./Assignment-6/HW6_Stereo)
